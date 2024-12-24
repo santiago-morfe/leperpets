@@ -95,10 +95,29 @@ export const PetsProvider = ({ children }) => {
         return Math.floor(diff / (1000 * 60 * 60 * 24));
     }
 
+    // renombrar las mascotas
+    const rename = (id, name) => {
+        setPets((prev) => ({
+            ...prev,
+            [id]: {
+                ...prev[id],
+                name,
+            },
+        }))
+    }   
+
+    // Eliminar mascotas
+    const remove = (id) => {
+        setPets((prev) => {
+            const newPets = { ...prev };
+            delete newPets[id];
+            return newPets;
+        });
+    };
 
     return (
-        <PetsContext.Provider value={{ Pets, addPets, feed, play, rest, age }}>
+        <PetsContext.Provider value={{ Pets, addPets, feed, play, rest, age, rename, remove }}>
             {children}
         </PetsContext.Provider>
     );
-};
+};      

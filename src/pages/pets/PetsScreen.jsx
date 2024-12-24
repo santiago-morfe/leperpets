@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { PetsContext } from "../../contexts/PetsContext";
+import ItemPet from "./components/ItemPet";
 
 const PetsScreen = () => {
     const { Pets, addPets } = useContext(PetsContext);
@@ -11,7 +11,7 @@ const PetsScreen = () => {
             <ul>
                 {Object.entries(Pets).map(([id, pet]) => (
                     <li key={id}>
-                        <Link to={`/pet/${id}`}>{pet.name}</Link>
+                        <ItemPet pet={pet} />
                     </li>
                 ))}
             </ul>
