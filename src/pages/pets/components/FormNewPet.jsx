@@ -1,16 +1,22 @@
 // formulario para crear un nuevo pet
 
-import React, { useState } from 'react'
-import { usePets } from '../../../contexts/PetsContext'
+import React, { useState, useContext } from 'react'
+import { PetsContext } from '../../../contexts/PetsContext'
 
-const FormNewPet = () => {
-    const { addPets } = usePets()
+const FormNewPet = ({setIsVisible}) => {
+    const { addPets } = useContext(PetsContext)
     const [name, setName] = useState('')
     const [type, setType] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault()
         addPets(name, type)
+        setIsVisible(false)
+    }
+
+    const handleCancel = (e) => {
+        e.preventDefault()
+        setIsVisible(false)
     }
 
     return (
@@ -24,6 +30,7 @@ const FormNewPet = () => {
                     <option value="fish">Pez</option>
                 </select>
                 <button type="submit">Agregar</button>
+                <button onClick={handleCancel}>Cancelar</button>
             </form>
         </div>
     );

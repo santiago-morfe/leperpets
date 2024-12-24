@@ -9,8 +9,7 @@ const PlayScreen = () => {
   useEffect(() => {
     const loadComponent = async () => {
       try {
-        // Importar el componente dinámicamente basado en el texto
-        const importedComponent = await import(`./games/${game}.jsx`)
+        const importedComponent = await import(`./games/${game}.jsx`) // Importar el componente dinámicamente basado en el texto
         setComponent(() => importedComponent.default); // Asignar el componente
       } catch (error) {
         console.error('Error al cargar el componente:', error)
