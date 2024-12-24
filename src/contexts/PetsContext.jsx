@@ -7,7 +7,7 @@ export const PetsProvider = ({ children }) => {
     // Cargar mascotas desde el localStorage
     const [Pets, setPets] = useState(() => {
         const storedData = localStorage.getItem('Pets');
-        return storedData ? JSON.parse(storedData) : {};
+        return storedData ? JSON.parse(storedData) : [];
     });
 
     // Guardar el estado en localStorage cuando cambie
@@ -15,108 +15,112 @@ export const PetsProvider = ({ children }) => {
         localStorage.setItem('Pets', JSON.stringify(Pets));
     }, [Pets]);
 
-    // vajar el nivel de hambre por cada 10 minitos
+    // rutina que disminulle la felicidad y hambre de las mascotas
     useEffect(() => {
         const interval = setInterval(() => {
-            setPets((prev) => {
-                const newPets = { ...prev };
-                for (const id in newPets) {
-                    newPets[id].hunger = Math.max(newPets[id].hunger - 5, 0);
-                    newPets[id].happiness = Math.max(newPets[id].happiness - 5, 0);
-                    if (newPets[id].hunger === 0 || newPets[id].energy === 0) {
-                        newPets[id].live = false;
-                    }
-                }
-                return newPets;
+            const newPets = Pets.map((pet) => {
+                return {
+                    ...pet,
+                    happiness: pet.happiness - 5,
+                    hunger: pet.hunger - 5,
+                };
             });
-        }, 600000); // 10 minutos
+            setPets(newPets);
+        }, 10000);
         return () => clearInterval(interval);
-    }, []);
+    }, [Pets]);
 
-    // Agregar una nueva mascota
+    // Funciones para interactuar con las mascotas
+
+    // Agregar una mascota
     const addPets = (name, type) => {
-        setPets((prev) => {
-            // Obtener el último id (el id más alto)
-            const lastId = Object.keys(prev.items).length
-                ? Math.max(...Object.keys(prev.items).map(Number)) // Si hay mascotas, obtenemos el id máximo
-                : 0; // Si no hay mascotas, comenzamos con el id 0
-            const newId = lastId + 1; // Incrementar en 1 para el nuevo id
-            // fecha de creación
-            const createdAt = new Date().toISOString();
-            return {
-                ...prev,
-                items: {
-                    ...prev.items,
-                    [newId]: { type, name, createdAt, hunger: 50, energy: 50, happiness: 50, live: true },
-                },
-            };
-        });
-    };
 
-    // Interacciones específicas por ID
-    
-    const feed = (id) => {
-        setPets((prev) => ({
-            ...prev,
-            [id]: {
-                ...prev[id],
-                hunger: Math.min(prev[id].hunger + 10, 100),
-                energy: Math.min(prev[id].energy + 10, 100),
-            },
-        }));
-    };
+        // Generar un nuevo id sumandole 1 al ultimo de la lista
 
-    const play = (id) => {
-        setPets((prev) => ({
-            ...prev,
-            [id]: {
-                ...prev[id],
-                happiness: Math.min(prev[id].happiness + 10, 100),
-                energy: Math.max(prev[id].energy - 10, 0),
-            },
-        }));
-    };
+        const newId =  Pets.length > 0 ? parseInt(Pets[Pets.length - 1].id) + 1 : 1
 
-    const rest = (id) => {
-        setPets((prev) => ({
-            ...prev,
-            [id]: {
-                ...prev[id],
-                energy: Math.min(prev[id].energy + 20, 100),
-            },
-        }));
-    };
+        // Crear un nuevo objeto pet
+        const newPet = {
+            id: newId,
+            name,
+            type,
+            age: 0,
+            hunger: 100,
+            happiness: 100,
+            energy: 100,
+        };
 
-    // edad de la mascota
-    const age = (id) => {
-        const now = new Date();
-        const createdAt = new Date(Pets[id].createdAt);
-        const diff = now - createdAt;
-        return Math.floor(diff / (1000 * 60 * 60 * 24));
+        // Agregar la nueva mascota al estado
+        setPets([...Pets, newPet]);
     }
 
-    // renombrar las mascotas
-    const rename = (id, name) => {
-        setPets((prev) => ({
-            ...prev,
-            [id]: {
-                ...prev[id],
-                name,
-            },
-        }))
-    }   
+    // eliminar una mascota
+    const removePet = (id) => {
+        const newPets = Pets.filter((pet) => pet.id !== id)
+        setPets(newPets)
+    };
 
-    // Eliminar mascotas
-    const remove = (id) => {
-        setPets((prev) => {
-            const newPets = { ...prev };
-            delete newPets[id];
-            return newPets;
+    // jugar con mascota
+    const play = (id) => {
+        const newPets = Pets.map((pet) => {
+            if (pet.id === id) {
+                return {
+                    ...pet,
+                    happiness: pet.happiness + 10,
+                    energy: pet.energy - 10,
+                };
+            }
+            return pet;
         });
+        setPets(newPets);
+    };
+
+    // alimentar a mascota
+    const feed = (id) => {
+        const newPets = Pets.map((pet) => {
+            if (pet.id === id) {
+                return {
+                    ...pet,
+                    hunger: pet.hunger + 10,
+                    energy: pet.energy + 10,
+                };
+            }
+            return pet;
+        });
+        setPets(newPets);
+    };
+
+    // descansar mascota
+    const rest = (id) => {
+        const newPets = Pets.map((pet) => {
+            if (pet.id === id) {
+                return {
+                    ...pet,
+                    energy: pet.energy + 10,
+                    hunger: pet.hunger - 10,
+                };
+            }
+            return pet;
+        });
+        setPets(newPets);
+    };
+
+    // renombra una mascota
+    const rename = (id, name) => {
+        const newPets = Pets.map((pet) => {
+            if (pet.id === id) {
+                return {
+                    ...pet,
+                    name,
+                };
+            }
+            return pet;
+        });
+        setPets(newPets);
     };
 
     return (
-        <PetsContext.Provider value={{ Pets, addPets, feed, play, rest, age, rename, remove }}>
+        <PetsContext.Provider value={{ Pets, addPets, removePet, play, feed, rest, rename }}>
             {children}
         </PetsContext.Provider>
     );

@@ -5,7 +5,7 @@ const AttributesPet = ({ happiness, energi, hunger }) => {
             <div>
                 <div>
                     <span>Felicidad</span>
-                    <progress value={happiness} max="100"></progress>
+                    <progress value="3" max="100"></progress>
                 </div>
                 <div>
                     <span>Energía</span>
