@@ -15,6 +15,24 @@ export const PetsProvider = ({ children }) => {
         localStorage.setItem('Pets', JSON.stringify(Pets));
     }, [Pets]);
 
+    // vajar el nivel de hambre por cada 10 minitos
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPets((prev) => {
+                const newPets = { ...prev };
+                for (const id in newPets) {
+                    newPets[id].hunger = Math.max(newPets[id].hunger - 5, 0);
+                    newPets[id].happiness = Math.max(newPets[id].happiness - 5, 0);
+                    if (newPets[id].hunger === 0 || newPets[id].energy === 0) {
+                        newPets[id].live = false;
+                    }
+                }
+                return newPets;
+            });
+        }, 600000); // 10 minutos
+        return () => clearInterval(interval);
+    }, []);
+
     // Agregar una nueva mascota
     const addPets = (name, type) => {
         setPets((prev) => {
@@ -29,7 +47,7 @@ export const PetsProvider = ({ children }) => {
                 ...prev,
                 items: {
                     ...prev.items,
-                    [newId]: { type, name, createdAt, hunger: 50, energy: 50, happiness: 50 },
+                    [newId]: { type, name, createdAt, hunger: 50, energy: 50, happiness: 50, live: true },
                 },
             };
         });
@@ -42,7 +60,8 @@ export const PetsProvider = ({ children }) => {
             ...prev,
             [id]: {
                 ...prev[id],
-                hunger: Math.max(prev[id].hunger - 10, 0),
+                hunger: Math.min(prev[id].hunger + 10, 100),
+                energy: Math.min(prev[id].energy + 10, 100),
             },
         }));
     };
@@ -78,7 +97,7 @@ export const PetsProvider = ({ children }) => {
 
 
     return (
-        <PetsContext.Provider value={{ Pets, addPets, feed, play, rest }}>
+        <PetsContext.Provider value={{ Pets, addPets, feed, play, rest, age }}>
             {children}
         </PetsContext.Provider>
     );
