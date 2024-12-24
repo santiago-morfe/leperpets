@@ -3,14 +3,14 @@ import { useParams } from 'react-router-dom'
 
 
 const PlayScreen = () => {
-  const { game } = useParams()// Nombre del componente como texto
+  const { game, petId } = useParams() // Obtener los parámetros de la URL
   const [Component, setComponent] = useState(null) // Para almacenar el componente importado dinámicamente
 
   useEffect(() => {
     const loadComponent = async () => {
       try {
         // Importar el componente dinámicamente basado en el texto
-        const importedComponent = await import(`./games/${game}`)
+        const importedComponent = await import(`./games/${game}.jsx`)
         setComponent(() => importedComponent.default); // Asignar el componente
       } catch (error) {
         console.error('Error al cargar el componente:', error)
