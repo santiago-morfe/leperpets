@@ -3,14 +3,14 @@ import { useParams } from 'react-router-dom'
 
 
 const PlayScreen = () => {
-  const { juego } = useParams()// Nombre del componente como texto
+  const { game } = useParams()// Nombre del componente como texto
   const [Component, setComponent] = useState(null) // Para almacenar el componente importado dinámicamente
 
   useEffect(() => {
     const loadComponent = async () => {
       try {
         // Importar el componente dinámicamente basado en el texto
-        const importedComponent = await import(`./components/${juego}`)
+        const importedComponent = await import(`./components/${game}`)
         setComponent(() => importedComponent.default); // Asignar el componente
       } catch (error) {
         console.error('Error al cargar el componente:', error)
@@ -19,7 +19,7 @@ const PlayScreen = () => {
     };
 
     loadComponent()
-  }, [juego])
+  }, [game])
 
     return ( 
         <div>

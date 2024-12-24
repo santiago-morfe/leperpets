@@ -6,6 +6,7 @@ const Home = lazy(() => import('./pages/home/HomeScreen'))
 const Pet = lazy(() => import('./pages/pet/PetScreen'))
 const Pets = lazy(() => import('./pages/pets/PetsScreen'))
 const Play = lazy(() => import('./pages/play/PlayScreen'))
+const Manual = lazy(() => import('./pages/manual/ManualScreen'))
 
 function App() {
   return (
@@ -14,9 +15,11 @@ function App() {
         <Routes>
           <Route path="*" element={<div>No encontrado</div>} />
           <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/manual" element={<Manual />} />
           <Route path="/pets" element={<Pets />} />
           <Route path="/pet/:petId" element={<Pet />} />
-          <Route path="/play/:petId/:juego" element={<Play/> } />
+          <Route path="/play/:petId/:game" element={<Play/> } />
         </Routes>
       </Suspense>
     </PetsProvider>
