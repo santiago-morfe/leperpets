@@ -43,7 +43,7 @@ export const PetsProvider = ({ children }) => {
             id: newId,
             name,
             type,
-            age: 0,
+            createAt: new Date(),
             hunger: 100,
             happiness: 100,
             energy: 100,
@@ -116,6 +116,14 @@ export const PetsProvider = ({ children }) => {
             return pet;
         });
         setPets(newPets);
+    };
+
+    // edad de la mascota en base a la fecha de creación
+    const age = (createAt) => {
+        const now = new Date();
+        const diff = now - createAt;
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+        return age;
     };
 
     return (
