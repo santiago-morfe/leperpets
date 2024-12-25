@@ -18,17 +18,16 @@ export const PetsProvider = ({ children }) => {
     // rutina que disminulle la felicidad y hambre de las mascotas
     useEffect(() => {
         const interval = setInterval(() => {
-            const newPets = Pets.map((pet) => {
-                return {
+            setPets((currentPets) =>
+                currentPets.map((pet) => ({
                     ...pet,
-                    happiness: pet.happiness - 5,
-                    hunger: pet.hunger - 5,
-                };
-            });
-            setPets(newPets);
-        }, 10000);
+                    happiness: Math.max(pet.happiness - 5, 0),
+                    hunger: Math.max(pet.hunger - 5, 0),
+                }))
+            );
+        }, 10 * 60000);
         return () => clearInterval(interval);
-    }, [Pets]);
+    }, []);
 
     // Funciones para interactuar con las mascotas
 

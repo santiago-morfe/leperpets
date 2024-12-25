@@ -18,8 +18,8 @@ const PetsScreen = () => {
             <button onClick={handleAddPet}>Agregar mascota</button>
             {isVisible && <FormNewPet setIsVisible={setIsVisible} />}
             <ul>
-                {Object.entries(Pets).map(([id, pet]) => (
-                    <li key={id}>
+                {Pets.map((pet) => (
+                    <li key={pet.id}>
                         <ItemPet pet={pet} />
                     </li>
                 ))}
