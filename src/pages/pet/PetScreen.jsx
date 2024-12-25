@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react"
 import { PetsContext } from "../../contexts/PetsContext"
 
 const PetScreen = () => {
-    const { Pets, addPets, feed, play, rest } = useContext(PetsContext)
+    const { Pets, feed, play, rest, age } = useContext(PetsContext)
     const { petId } = useParams()
     const [Pet, setPet] = useState({})
 
@@ -23,6 +23,13 @@ const PetScreen = () => {
     return (
         <div>
             <h1>{Pet.name}</h1>
+            <p>Edad: {age(Pet)}</p>
+            <p>Hambre: </p>
+            <progress value={Pet.hunger} max="100"></progress>
+            <p>Energía: </p>
+            <progress value={Pet.energy} max="100"></progress>
+            <p>Felicidad: </p>
+            <progress value={Pet.happiness} max="100"></progress>
             <button onClick={() => feed(petId)}>Alimentar</button>
             <button onClick={() => play(petId)}>Jugar</button>
             <button onClick={() => rest(petId)}>Descansar</button>

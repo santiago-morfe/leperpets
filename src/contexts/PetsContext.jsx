@@ -25,7 +25,7 @@ export const PetsProvider = ({ children }) => {
                     hunger: Math.max(pet.hunger - 5, 0),
                 }))
             );
-        }, 10 * 60000);
+        }, 5*60000);
         return () => clearInterval(interval);
     }, []);
 
@@ -43,7 +43,7 @@ export const PetsProvider = ({ children }) => {
             id: newId,
             name,
             type,
-            createAt: new Date(),
+            createdAt: new Date(),
             hunger: 100,
             happiness: 100,
             energy: 100,
@@ -62,7 +62,7 @@ export const PetsProvider = ({ children }) => {
     // jugar con mascota
     const play = (id) => {
         const newPets = Pets.map((pet) => {
-            if (pet.id === id) {
+            if ((pet.id === parseInt(id)) && (pet.energy > 0)) {
                 return {
                     ...pet,
                     happiness: pet.happiness + 10,
@@ -77,11 +77,11 @@ export const PetsProvider = ({ children }) => {
     // alimentar a mascota
     const feed = (id) => {
         const newPets = Pets.map((pet) => {
-            if (pet.id === id) {
+            if ((pet.id === parseInt(id)) && (pet.hunger < 100)) {
                 return {
                     ...pet,
-                    hunger: pet.hunger + 10,
-                    energy: pet.energy + 10,
+                    hunger: Math.min(pet.hunger + 10, 100),
+                    energy: Math.min(pet.energy + 5 , 100),
                 };
             }
             return pet;
@@ -92,11 +92,12 @@ export const PetsProvider = ({ children }) => {
     // descansar mascota
     const rest = (id) => {
         const newPets = Pets.map((pet) => {
-            if (pet.id === id) {
+            if ((pet.id === parseInt(id)) && (pet.energy < 100) && (pet.hunger > 0)) {
                 return {
                     ...pet,
-                    energy: pet.energy + 10,
-                    hunger: pet.hunger - 10,
+                    energy: Math.min(pet.energy + 10, 100),
+                    hunger: Math.max(pet.hunger - 10, 0),
+                    happiness: Math.min(pet.happiness + 5, 100),
                 };
             }
             return pet;
@@ -107,7 +108,7 @@ export const PetsProvider = ({ children }) => {
     // renombra una mascota
     const rename = (id, name) => {
         const newPets = Pets.map((pet) => {
-            if (pet.id === id) {
+            if (pet.id === parseInt(id)) {
                 return {
                     ...pet,
                     name,
@@ -119,15 +120,16 @@ export const PetsProvider = ({ children }) => {
     };
 
     // edad de la mascota en base a la fecha de creación
-    const age = (createAt) => {
+    const age = (pet) => {
         const now = new Date();
-        const diff = now - createAt;
-        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+        const createdAt = new Date(pet.createdAt);
+        const diff = now - createdAt;
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24));
         return age;
     };
 
     return (
-        <PetsContext.Provider value={{ Pets, addPets, removePet, play, feed, rest, rename }}>
+        <PetsContext.Provider value={{ Pets, addPets, removePet, play, feed, rest, rename, age }}>
             {children}
         </PetsContext.Provider>
     );
