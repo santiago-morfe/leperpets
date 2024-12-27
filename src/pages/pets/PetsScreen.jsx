@@ -11,6 +11,9 @@ const PetsScreen = () => {
         setIsVisible(true)
     };
 
+    if (!Pets) {
+        return <div>No se encontraron mascotas</div>
+    }
 
     return (
         <div>

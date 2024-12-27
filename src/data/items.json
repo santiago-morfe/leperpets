@@ -1,0 +1,16 @@
+{
+    "consumibles": [
+        {
+            "id": 1,
+            "name": "baratija",
+            "description": "Una baratija que no sirve para nada",
+            "cant": 1,
+            "efect": {
+                "happiness": 0,
+                "hunger": 0,
+                "energy": 0,
+                "live": null
+            }
+        }
+    ]
+}

@@ -12,7 +12,6 @@ const AttributesPet = ({ pet }) => {
 
     return (
         <div>
-            <h3>Atributos</h3>
             <div>
                 <div>
                     <span>Felicidad</span>

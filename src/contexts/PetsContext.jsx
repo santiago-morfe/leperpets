@@ -25,7 +25,7 @@ export const PetsProvider = ({ children }) => {
                     hunger: Math.max(pet.hunger - 5, 0),
                 }))
             );
-        }, 5*60000);
+        }, 5 * 60000);
         return () => clearInterval(interval);
     }, []);
 
@@ -36,7 +36,7 @@ export const PetsProvider = ({ children }) => {
 
         // Generar un nuevo id sumandole 1 al ultimo de la lista
 
-        const newId =  Pets.length > 0 ? parseInt(Pets[Pets.length - 1].id) + 1 : 1
+        const newId = Pets.length > 0 ? parseInt(Pets[Pets.length - 1].id) + 1 : 1
 
         // Crear un nuevo objeto pet
         const newPet = {
@@ -44,8 +44,8 @@ export const PetsProvider = ({ children }) => {
             name,
             type,
             createdAt: new Date(),
-            hunger: 100,
             happiness: 100,
+            hunger: 100,
             energy: 100,
         };
 
@@ -65,8 +65,8 @@ export const PetsProvider = ({ children }) => {
             if ((pet.id === parseInt(id)) && (pet.energy > 0)) {
                 return {
                     ...pet,
-                    happiness: pet.happiness + 10,
-                    energy: pet.energy - 10,
+                    happiness: Math.min(pet.happiness + 10, 100),
+                    energy: Math.max(pet.energy - 10, 0),
                 };
             }
             return pet;
@@ -81,7 +81,7 @@ export const PetsProvider = ({ children }) => {
                 return {
                     ...pet,
                     hunger: Math.min(pet.hunger + 10, 100),
-                    energy: Math.min(pet.energy + 5 , 100),
+                    energy: Math.min(pet.energy + 5, 100),
                 };
             }
             return pet;
@@ -120,16 +120,39 @@ export const PetsProvider = ({ children }) => {
     };
 
     // edad de la mascota en base a la fecha de creación
-    const age = (pet) => {
+    const age = (id) => {
         const now = new Date();
-        const createdAt = new Date(pet.createdAt);
-        const diff = now - createdAt;
-        const age = Math.floor(diff / (1000 * 60 * 60 * 24));
-        return age;
+        const pet = Pets.find((pet) => pet.id === parseInt(id));
+        const diff = now - new Date(pet.createdAt);
+        // retornan minutos si es menos de una hora oras si es menos de un dia y dias si es mas de un dia y menos de un mes y meses si es mas de un mes
+        if (diff < 60000) return Math.floor(diff / 1000) + ' segundos';
+        if (diff < 3600000) return Math.floor(diff / 60000) + ' minutos';
+        if (diff < 86400000) return Math.floor(diff / 3600000) + ' horas';
+        if (diff < 2592000000) return Math.floor(diff / 86400000) + ' días';
+        if (diff < 31536000000) return Math.floor(diff / 2592000000) + ' meses';
+    };
+
+    // funcion para consumir items consumibles
+    const consume = (id, item) => {
+        const newPets = Pets.map((pet) => {
+            if (pet.id === parseInt(id)) {
+                return {
+                    ...pet,
+                    // comprobar si es negativo o positivo
+                    happiness: Math.min(Math.max(pet.happiness + item.happiness, 0), 100),
+                    energy: Math.min(Math.max(pet.energy + item.energy, 0), 100),
+                    hunger: Math.min(Math.max(pet.hunger + item.hunger, 0), 100),
+                    // cambiar el estado de vivo o no vivo si live es diferente a null
+                    live: item.live !== null ? item.live : pet.live,
+                };
+            }
+            return pet;
+        });
+        setPets(newPets);
     };
 
     return (
-        <PetsContext.Provider value={{ Pets, addPets, removePet, play, feed, rest, rename, age }}>
+        <PetsContext.Provider value={{ Pets, addPets, removePet, play, feed, rest, rename, age, consume }}>
             {children}
         </PetsContext.Provider>
     );

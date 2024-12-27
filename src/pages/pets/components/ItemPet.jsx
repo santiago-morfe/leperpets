@@ -5,16 +5,17 @@ import { PetsContext } from '../../../contexts/PetsContext';
 
 const ItemPet = ({ pet }) => {
     const [showOptions, setShowOptions] = useState(false);
-    const { removePet, play, feed, rest } = useContext(PetsContext);
+    const { removePet, play, feed, rest, age } = useContext(PetsContext);
 
     const handleOptions = () => {
         setShowOptions(!showOptions);
     }
 
-
-
     return (
         <>
+            <Link to={`/pet/${pet.id}`}>
+                <h1>{pet.name}</h1>
+            </Link>
             <button onClick={handleOptions}>...</button>
             {showOptions && (
                 <div>
@@ -24,9 +25,8 @@ const ItemPet = ({ pet }) => {
                     <button onClick={() => removePet(pet.id)}>Eliminar</button>
                 </div>
             )}
-            <span>edad: {pet.age}</span>
+            <span>edad: {age(pet.id)}</span>
             <AttributesPet pet={pet} />
-            <Link to={`/pet/${pet.id}`}>{pet.name}</Link>
         </>
     );
 }
