@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from 'react';
 export const InventoriContext = createContext();
 
 export const InventoriProvider = ({ children }) => {
-    const [Inventori, setInventori] = useState(JSON.parse(localStorage.getItem('inventori')) || []);
+    const [Inventori, setInventori] = useState(JSON.parse(localStorage.getItem('inventori')) || {});
 
     useEffect(() => {
         localStorage.setItem('inventori', JSON.stringify(Inventori));
