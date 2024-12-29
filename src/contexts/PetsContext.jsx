@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { config } from '../data/config.json';
 
 export const PetsContext = createContext();
 
@@ -9,6 +10,9 @@ export const PetsProvider = ({ children }) => {
         const storedData = localStorage.getItem('Pets');
         return storedData ? JSON.parse(storedData) : [];
     });
+
+    // cargar la configuracion de los pets
+    const [Config] = useState(config);
 
     // Guardar el estado en localStorage cuando cambie
     useEffect(() => {
@@ -21,11 +25,11 @@ export const PetsProvider = ({ children }) => {
             setPets((currentPets) =>
                 currentPets.map((pet) => ({
                     ...pet,
-                    happiness: Math.max(pet.happiness - 5, 0),
-                    hunger: Math.max(pet.hunger - 5, 0),
+                    happiness: Math.max(pet.happiness - Config.valueToReduceHappyness, 0),
+                    hunger: Math.max(pet.hunger - Config.valueToReduceHunger, 0),
                 }))
             );
-        }, 5 * 60000);
+        }, Config.interval * 60000);
         return () => clearInterval(interval);
     }, []);
 
@@ -44,9 +48,9 @@ export const PetsProvider = ({ children }) => {
             name,
             type,
             createdAt: new Date(),
-            happiness: 100,
-            hunger: 100,
-            energy: 100,
+            happiness: Config.initialHappiness,
+            hunger: Config.initialHunger,
+            energy: Config.initialEnergy,
         };
 
         // Agregar la nueva mascota al estado
@@ -60,13 +64,26 @@ export const PetsProvider = ({ children }) => {
     };
 
     // jugar con mascota
-    const play = (id) => {
+    const play = (id, sumHappiness) => {
         const newPets = Pets.map((pet) => {
             if ((pet.id === parseInt(id)) && (pet.energy > 0)) {
                 return {
                     ...pet,
-                    happiness: Math.min(pet.happiness + 10, 100),
-                    energy: Math.max(pet.energy - 10, 0),
+                    happiness: Math.min(pet.happiness + sumHappiness, Config.maxHappiness),
+                };
+            }
+            return pet;
+        });
+        setPets(newPets);
+    };
+
+    // funcion para vajar la energia de la mascota
+    const reduceEnergy = (id, value) => {
+        const newPets = Pets.map((pet) => {
+            if (pet.id === parseInt(id)) {
+                return {
+                    ...pet,
+                    energy: Math.max(pet.energy - value, 0),
                 };
             }
             return pet;
@@ -77,11 +94,11 @@ export const PetsProvider = ({ children }) => {
     // alimentar a mascota
     const feed = (id) => {
         const newPets = Pets.map((pet) => {
-            if ((pet.id === parseInt(id)) && (pet.hunger < 100)) {
+            if ((pet.id === parseInt(id)) && (pet.hunger < Config.maxHunger)) {
                 return {
                     ...pet,
-                    hunger: Math.min(pet.hunger + 10, 100),
-                    energy: Math.min(pet.energy + 5, 100),
+                    hunger: Math.min(pet.hunger + 10, Config.maxHunger),
+                    energy: Math.min(pet.energy + 5, Config.maxEnergy),
                 };
             }
             return pet;
@@ -92,12 +109,12 @@ export const PetsProvider = ({ children }) => {
     // descansar mascota
     const rest = (id) => {
         const newPets = Pets.map((pet) => {
-            if ((pet.id === parseInt(id)) && (pet.energy < 100) && (pet.hunger > 0)) {
+            if ((pet.id === parseInt(id)) && (pet.energy < Config.maxEnergy ) && (pet.hunger > 0)) {
                 return {
                     ...pet,
-                    energy: Math.min(pet.energy + 10, 100),
+                    energy: Math.min(pet.energy + 10, Config.maxEnergy),
                     hunger: Math.max(pet.hunger - 10, 0),
-                    happiness: Math.min(pet.happiness + 5, 100),
+                    happiness: Math.min(pet.happiness + 5, Config.maxHappiness),
                 };
             }
             return pet;
@@ -139,9 +156,9 @@ export const PetsProvider = ({ children }) => {
                 return {
                     ...pet,
                     // comprobar si es negativo o positivo
-                    happiness: Math.min(Math.max(pet.happiness + item.happiness, 0), 100),
-                    energy: Math.min(Math.max(pet.energy + item.energy, 0), 100),
-                    hunger: Math.min(Math.max(pet.hunger + item.hunger, 0), 100),
+                    happiness: Math.min(Math.max(pet.happiness + item.happiness, 0), Config.maxHappiness),
+                    energy: Math.min(Math.max(pet.energy + item.energy, 0), Config.maxEnergy),
+                    hunger: Math.min(Math.max(pet.hunger + item.hunger, 0), Config.maxHunger),
                     // cambiar el estado de vivo o no vivo si live es diferente a null
                     live: item.live !== null ? item.live : pet.live,
                 };
@@ -152,7 +169,7 @@ export const PetsProvider = ({ children }) => {
     };
 
     return (
-        <PetsContext.Provider value={{ Pets, addPets, removePet, play, feed, rest, rename, age, consume }}>
+        <PetsContext.Provider value={{ Pets, addPets, removePet, play, feed, rest, rename, age, consume, reduceEnergy }}>
             {children}
         </PetsContext.Provider>
     );

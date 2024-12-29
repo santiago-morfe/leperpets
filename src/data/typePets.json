@@ -2,7 +2,19 @@
     "types": [
         {
             "name": "Dog",
-            "description": "D"
+            "description": "Dogs are the most loyal pets, they are always happy to see you and they are always ready to play."
+        },
+        {
+            "name": "Cat",
+            "description": "Cats are independent pets, they are always looking for a place to sleep and they are always ready to play."
+        },
+        {
+            "name": "Fish",
+            "description": "Fish are the most relaxing pets, they are always swimming and they are always ready to play."
+        },
+        {
+            "name": "Bird",
+            "description": "Birds are the most colorful pets, they are always singing and they are always ready to play."
         }
     ]
 }

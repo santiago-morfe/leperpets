@@ -1,0 +1,15 @@
+{
+    "config": {
+        "interval": 10,
+        "valueToReduceHappyness": 5,
+        "valueToReduceHunger": 5,
+        "valueToReduceEnergy": 5,
+        "maxHappyness": 100,
+        "maxHunger": 100,
+        "maxEnergy": 100,
+        "initialHappiness": 50,
+        "initialHunger": 50,
+        "initialEnergy": 50,
+        "initialMoney": 100
+    }
+}

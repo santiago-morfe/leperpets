@@ -1,9 +1,10 @@
 import { createContext, useEffect, useState} from "react"
+import { config } from "../data/config.json"
 
 export const WalletContext = createContext()
 
 export const WalletProvider = ({ children }) => {
-    const [wallet, setWallet] = useState(JSON.parse(localStorage.getItem('wallet')) || 0)
+    const [wallet, setWallet] = useState(JSON.parse(localStorage.getItem('wallet')) || config.initialEnergy)
 
     useEffect(() => {
         localStorage.setItem('wallet', JSON.stringify(wallet))

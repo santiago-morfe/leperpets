@@ -3,8 +3,26 @@
         {
             "id": 1,
             "name": "baratija",
+            "img": "baratija.png",
             "description": "Una baratija que no sirve para nada",
             "cant": 1,
+            "price": 0,
+            "consumible": false,
+            "efect": {
+                "happiness": 0,
+                "hunger": 0,
+                "energy": 0,
+                "live": null
+            }
+        },
+        {
+            "id": 2,
+            "name": "piedra",
+            "img": "piedra.png",
+            "description": "Una piedra que no sirve para nada",
+            "cant": 1,
+            "price": 0,
+            "consumible": false,
             "efect": {
                 "happiness": 0,
                 "hunger": 0,

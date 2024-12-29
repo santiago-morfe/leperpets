@@ -1,24 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useState, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { CartContext } from '../../contexts/CartContext'
+import { items } from '../../data/items'
 
 const ShopScreen = () => {
 
-    const [products, setProducts] = useState([])
+    const [products] = useState(items)
     const { addItem } = useContext(CartContext)
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch('../data/items.json')
-                const data = await response.json()
-                setProducts(data)
-            } catch (error) {
-                console.error(error)
-            }
-        }
-
-        fetchProducts()
-    }, [])
+    const handleBuy = (product) => {
+        addItem(product)
+    }
 
     return (
         <div>
@@ -26,8 +18,11 @@ const ShopScreen = () => {
             <div>
                 {products.map((product) => (
                     <div key={product.id}>
-                        <h2>{product.name}</h2>
-                        <button>Buy</button>
+                        <Link to={`/product/${product.id}`}>
+                            <h2>{product.name}</h2>
+                        </Link>
+                        <p>{product.price}</p>
+                        <button onClick={() => handleBuy(product)}>Buy</button>
                     </div>
                 ))}
             </div>
