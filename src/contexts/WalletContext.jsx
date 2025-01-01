@@ -10,7 +10,6 @@ export const WalletProvider = ({ children }) => {
         localStorage.setItem('wallet', JSON.stringify(wallet))
     }, [wallet])
 
-
     // Funciones para interactuar con el wallet
     const addMoney = (money) => {
         setWallet(wallet + money)
@@ -26,13 +25,8 @@ export const WalletProvider = ({ children }) => {
         }
     }
 
-    const getMoney = () => {
-        return wallet
-    }
-
-
     return (
-        <WalletContext.Provider value={{ addMoney, removeMoney, getMoney }}>
+        <WalletContext.Provider value={{ addMoney, removeMoney, wallet }}>
             {children}
         </WalletContext.Provider>
     )

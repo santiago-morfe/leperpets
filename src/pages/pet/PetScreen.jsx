@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import { PetsContext } from "../../contexts/PetsContext"
+import gameMetadata from "../../data/gameMetadata.json"
 
 const PetScreen = () => {
     const { Pets, feed, play, rest, age } = useContext(PetsContext)
     const { petId } = useParams()
-    const [Pet, setPet] = useState(Pets.find((pet) => pet.id === parseInt(petId)))
+    const [ Pet, setPet ] = useState(Pets.find((pet) => pet.id === parseInt(petId)))
+
 
     useEffect(() => {
         setPet(Pets.find((pet) => pet.id === parseInt(petId)))
@@ -29,6 +31,17 @@ const PetScreen = () => {
             <button onClick={() => feed(petId)}>Alimentar</button>
             <button onClick={() => play(petId)}>Jugar</button>
             <button onClick={() => rest(petId)}>Descansar</button>
+            <div>
+                <h2>juegos</h2>
+                <ul>
+                    {Object.keys(gameMetadata).map((game, index) => (
+                        <li key={index}>
+                            <a href={`/play/${petId}/${game}`}>{game}</a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
         </div>
     );
 

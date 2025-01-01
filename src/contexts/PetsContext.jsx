@@ -1,36 +1,50 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { config } from '../data/config.json';
+import React, { createContext, useState, useEffect } from 'react'
+import { config } from '../data/config.json'
 
-export const PetsContext = createContext();
+export const PetsContext = createContext()
 
 export const PetsProvider = ({ children }) => {
 
     // Cargar mascotas desde el localStorage
     const [Pets, setPets] = useState(() => {
-        const storedData = localStorage.getItem('Pets');
-        return storedData ? JSON.parse(storedData) : [];
+        const storedData = localStorage.getItem('Pets')
+        return storedData ? JSON.parse(storedData) : []
     });
 
     // cargar la configuracion de los pets
-    const [Config] = useState(config);
+    const [ Config ] = useState(config)
 
     // Guardar el estado en localStorage cuando cambie
     useEffect(() => {
-        localStorage.setItem('Pets', JSON.stringify(Pets));
+        localStorage.setItem('Pets', JSON.stringify(Pets))
     }, [Pets]);
 
     // rutina que disminulle la felicidad y hambre de las mascotas
     useEffect(() => {
         const interval = setInterval(() => {
-            setPets((currentPets) =>
-                currentPets.map((pet) => ({
-                    ...pet,
-                    happiness: Math.max(pet.happiness - Config.valueToReduceHappyness, 0),
-                    hunger: Math.max(pet.hunger - Config.valueToReduceHunger, 0),
-                }))
-            );
-        }, Config.interval * 60000);
-        return () => clearInterval(interval);
+            setPets((currentPets) =>{
+                return currentPets.map((pet) => {
+                    if (pet.hunger > 0 || pet.happiness > 0) {
+                        return {
+                            ...pet,
+                            happiness: Math.max(pet.happiness - Config.decreaseHappiness, 0),
+                            hunger: Math.max(pet.hunger - Config.decreaseHunger, 0),
+                        }
+                    } else if ( pet.energy > 0 ){
+                        return {
+                            ...pet,
+                            energy: Math.max(pet.energy - Config.decreaseEnergy, 0),
+                        }
+                    } else {
+                        return {
+                            ...pet,
+                            live: false,
+                        }
+                    }
+                })
+            })
+        }, Config.interval * 60000)
+        return () => clearInterval(interval)
     }, []);
 
     // Funciones para interactuar con las mascotas
@@ -51,6 +65,7 @@ export const PetsProvider = ({ children }) => {
             happiness: Config.initialHappiness,
             hunger: Config.initialHunger,
             energy: Config.initialEnergy,
+            live: true,
         };
 
         // Agregar la nueva mascota al estado
@@ -64,12 +79,12 @@ export const PetsProvider = ({ children }) => {
     };
 
     // jugar con mascota
-    const play = (id, sumHappiness) => {
+    const play = (id, value) => {
         const newPets = Pets.map((pet) => {
             if ((pet.id === parseInt(id)) && (pet.energy > 0)) {
                 return {
                     ...pet,
-                    happiness: Math.min(pet.happiness + sumHappiness, Config.maxHappiness),
+                        happiness: Math.min(pet.happiness +  parseInt(value), Config.maxHappiness),
                 };
             }
             return pet;
@@ -83,7 +98,7 @@ export const PetsProvider = ({ children }) => {
             if (pet.id === parseInt(id)) {
                 return {
                     ...pet,
-                    energy: Math.max(pet.energy - value, 0),
+                    energy: Math.max(pet.energy - value, 0)
                 };
             }
             return pet;
@@ -142,11 +157,11 @@ export const PetsProvider = ({ children }) => {
         const pet = Pets.find((pet) => pet.id === parseInt(id));
         const diff = now - new Date(pet.createdAt);
         // retornan minutos si es menos de una hora oras si es menos de un dia y dias si es mas de un dia y menos de un mes y meses si es mas de un mes
-        if (diff < 60000) return Math.floor(diff / 1000) + ' segundos';
-        if (diff < 3600000) return Math.floor(diff / 60000) + ' minutos';
-        if (diff < 86400000) return Math.floor(diff / 3600000) + ' horas';
-        if (diff < 2592000000) return Math.floor(diff / 86400000) + ' días';
-        if (diff < 31536000000) return Math.floor(diff / 2592000000) + ' meses';
+        if (diff < 60000) return Math.floor(diff / 1000) + ' segundos'
+        if (diff < 3600000) return Math.floor(diff / 60000) + ' minutos'
+        if (diff < 86400000) return Math.floor(diff / 3600000) + ' horas'
+        if (diff < 2592000000) return Math.floor(diff / 86400000) + ' días'
+        if (diff < 31536000000) return Math.floor(diff / 2592000000) + ' meses'
     };
 
     // funcion para consumir items consumibles
@@ -163,9 +178,9 @@ export const PetsProvider = ({ children }) => {
                     live: item.live !== null ? item.live : pet.live,
                 };
             }
-            return pet;
+            return pet
         });
-        setPets(newPets);
+        setPets(newPets)
     };
 
     return (

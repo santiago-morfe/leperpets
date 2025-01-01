@@ -1,32 +1,35 @@
 import { useState, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { CartContext } from '../../contexts/CartContext'
+import { WalletContext } from '../../contexts/WalletContext'
 import { items } from '../../data/items'
+import { Link } from 'react-router-dom'
+import CartComponent from '../../components/CartComponent.jsx'
 
 const ShopScreen = () => {
-
-    const [products] = useState(items)
     const { addItem } = useContext(CartContext)
+    const { wallet } = useContext(WalletContext)
+    const [itemList] = useState(items)
 
-    const handleBuy = (product) => {
-        addItem(product)
-    }
 
     return (
-        <div>
-            <h1>Shop</h1>
-            <div>
-                {products.map((product) => (
-                    <div key={product.id}>
-                        <Link to={`/product/${product.id}`}>
-                            <h2>{product.name}</h2>
+        <>
+            <CartComponent />
+            <h1>tiendita</h1>
+            <h2>monedas: </h2>
+            <p>{wallet}</p>
+            <h2>productos</h2>
+            <ul>
+                {itemList.map((item) => (
+                    <li key={item.id}>
+                        <Link to={`/shop/${item.id}`}>
+                            <p>{item.name} - {item.price}</p>
                         </Link>
-                        <p>{product.price}</p>
-                        <button onClick={() => handleBuy(product)}>Buy</button>
-                    </div>
+                        <button onClick={() => addItem(item)}>Agregar al carrito</button>
+
+                    </li>
                 ))}
-            </div>
-        </div>
+            </ul>
+        </>
     )
 }
 

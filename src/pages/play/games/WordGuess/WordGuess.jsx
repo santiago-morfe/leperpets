@@ -1,19 +1,10 @@
-import { useState, useContext } from 'react'
-// import { useParams } from 'react-router-dom'
-// import { PetsContext } from '../../../../contexts/PetsContext'
-// import { InputWord } from './components/InputWord'
+import { useState, useEffect,  useContext } from 'react'
 
-// juego de palabras para adivinar la palabra
-// en cada intento cuales de las letras de la entrada pertenesen a la palabra y cuales estan en la posision corecta
-// si la palabra es adivinada se gana el juego
-// si se agotan los intentos se pierde el juego
-// la palabra es siempre de 5 letras
-
-const WordGuess = () => {
+const WordGuess = ({ setFinished, setStart}) => {
     const [playStart, setplayStart] = useState(false)
     const [win, setWin] = useState(false)
     const [message, setMessage] = useState('')
-    const [word, setWord] = useState(['a', 'p', 'p', 'l', 'e'])
+    const [word] = useState(['a', 'p', 'p', 'l', 'e'])
     const [attemp, setAttem] = useState(1)
     const [inputsWord, setInputsWord] = useState([])
     const [lastImputsWord, setLastImputsWord] = useState([
@@ -26,6 +17,7 @@ const WordGuess = () => {
 
     const handlePlay = () => {
         setplayStart(true)
+        setStart(true)
     }
 
     const handleChange = (e, index) => {
@@ -86,7 +78,7 @@ const WordGuess = () => {
 
     return (
         <>
-            {playStart &&
+            {(playStart && !win) &&
                 <div>
                     <h1>Word Guess</h1>
                     <p>Guess the word</p>
@@ -127,6 +119,13 @@ const WordGuess = () => {
                     <h1>Word Guess</h1>
                     <p>Press start to play</p>
                     <button onClick={handlePlay}>Start</button>
+                </div>
+            }
+            {win &&
+                <div>
+                    <h1>Word Guess</h1>
+                    <p>Win</p>
+                    <button onClick={() => setFinished(true)}>Finish</button>
                 </div>
             }
         </>

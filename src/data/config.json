@@ -1,10 +1,10 @@
 {
     "config": {
-        "interval": 10,
-        "valueToReduceHappyness": 5,
-        "valueToReduceHunger": 5,
-        "valueToReduceEnergy": 5,
-        "maxHappyness": 100,
+        "interval": 60,
+        "decreaseHappiness": 5,
+        "decreaseHunger": 5,
+        "decreaseEnergy": 5,
+        "maxHappiness": 100,
         "maxHunger": 100,
         "maxEnergy": 100,
         "initialHappiness": 50,

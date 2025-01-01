@@ -21,19 +21,18 @@ export const CartProvider = ({ children }) => {
         }
     }
 
-    // eliminar items del carrito
-    const removeItem = (id) => {
-        const itemIndex = cart.findIndex((i) => i.id === id)
+    // eliminar item del carrito de a uno
+    const removeItem = (item) => {
+        const itemIndex = cart.findIndex((i) => i.id === item.id)
         if (itemIndex !== -1) {
             const newCart = [...cart]
-            newCart.splice(itemIndex, 1)
+            if (newCart[itemIndex].cant > 1) {
+                newCart[itemIndex].cant -= 1
+            } else {
+                newCart.splice(itemIndex, 1)
+            }
             setCart(newCart)
         }
-    }
-
-    // obtener el carrito
-    const getCart = () => {
-        return cart
     }
 
     // limpiar el carrito
@@ -41,8 +40,18 @@ export const CartProvider = ({ children }) => {
         setCart([])
     }
 
+    // total
+    const getTotal = () => {
+        return cart.reduce((acc, item) => acc + item.price * item.cant, 0)
+    }
+
+    // cantidad de items
+    const getItemsCount = () => {
+        return cart.reduce((acc, item) => acc + item.cant, 0)
+    }
+
     return (
-        <CartContext.Provider value={{ addItem, removeItem, getCart, clearCart }}>
+        <CartContext.Provider value={{ cart, addItem, removeItem, clearCart, getTotal, getItemsCount }}>
             {children}
         </CartContext.Provider>
     )
