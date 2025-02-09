@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import { PetsContext } from "../../contexts/PetsContext"
 import FormNewPet from "./components/FormNewPet"
 import ItemPet from "./components/ItemPet"
+import NavComponent from "../../components/NavComponent"
 
 const PetsScreen = () => {
     const { Pets } = useContext(PetsContext)
@@ -17,6 +18,7 @@ const PetsScreen = () => {
 
     return (
         <div>
+            <NavComponent />
             <h1>Mis mascotas</h1>
             <button onClick={handleAddPet}>Agregar mascota</button>
             {isVisible && <FormNewPet setIsVisible={setIsVisible} />}

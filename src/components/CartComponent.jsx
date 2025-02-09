@@ -8,22 +8,20 @@ const CartComponent = () => {
     const { wallet, removeMoney } = useContext(WalletContext)
     const { addInventory } = useContext(InventoryContext)
     const [isvisible, setIsVisible] = useState(false)
-    const [total] = useState(0)
 
     // comprar
     const buy = () => {
-        if (wallet >= total) {
-            cart.map((item) => {
+        if (wallet >= getTotal()) {
+            cart.forEach((item) => {
                 addInventory(item, item.cant)
             })
             clearCart()
-            removeMoney(total)
-            alert('Compra exitosa')
+            removeMoney(getTotal())
         }
     }
 
     const hanldeClickBuy = () => {
-        if (wallet >= total) {
+        if (wallet >= getTotal()) {
             buy()
         }else{
             alert('No tienes suficiente dinero')
@@ -33,6 +31,7 @@ const CartComponent = () => {
     return (
         <div>
             <h2 onClick={() => setIsVisible(!isvisible)} >Carrito {getItemsCount()}</h2>
+            <span>{wallet}</span>
             {isvisible && (
                 <div>
                     <button onClick={() => clearCart()}>Limpiar carrito</button>

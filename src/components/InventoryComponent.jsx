@@ -15,9 +15,8 @@ const InventoryComponent = () => {
                     <ul>
                         {inventory.map((item) => (
                             <li key={item.id}>
-                                <Link to={`/shop/${item.id}`}>{item.name}</Link>
+                                <Link to={`/shop/${item.id}`}>{item.name} {'('+item.cant+')'}</Link>
                                 <button onClick={() => removeItem(item)}> eliminar </button>
-                                
                             </li>
                         ))}
                     </ul>

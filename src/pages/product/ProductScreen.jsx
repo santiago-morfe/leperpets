@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState, useContext } from "react"
-import { items } from "../../data/items.json"
-import { CartContext,  } from "../../contexts/CartContext"
+import { CartContext } from "../../contexts/CartContext"
 import CartComponent from "../../components/CartComponent"
+import NavComponent from "../../components/NavComponent"
+import ITEMS_DATA from "../../data/itemsData.ts"
 
 const ProductScreen = () => {
 
@@ -12,7 +13,7 @@ const ProductScreen = () => {
     const { addItem } = useContext(CartContext)
 
     useEffect(() => {
-        const newProduct = items.find((item) => item.id === parseInt(productId))
+        const newProduct = ITEMS_DATA.find((item) => item.id === parseInt(productId))
         setProduct(newProduct)
     }, [productId])
 
@@ -22,6 +23,7 @@ const ProductScreen = () => {
 
     return (
         <>
+            <NavComponent />
             <CartComponent />
             <h1>{product.name}</h1>
                 <div>

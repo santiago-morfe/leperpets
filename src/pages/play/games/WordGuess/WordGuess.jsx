@@ -1,10 +1,11 @@
 import { useState, useEffect,  useContext } from 'react'
+import WORDS_DATA from './wordsData'
 
 const WordGuess = ({ setFinished, setStart}) => {
     const [playStart, setplayStart] = useState(false)
     const [win, setWin] = useState(false)
     const [message, setMessage] = useState('')
-    const [word] = useState(['a', 'p', 'p', 'l', 'e'])
+    const [word, setWord] = useState([])
     const [attemp, setAttem] = useState(1)
     const [inputsWord, setInputsWord] = useState([])
     const [lastImputsWord, setLastImputsWord] = useState([
@@ -25,6 +26,10 @@ const WordGuess = ({ setFinished, setStart}) => {
         newLastImputsWord[index].value = e.target.value
         setLastImputsWord(newLastImputsWord)
     }
+
+    useEffect(() => {
+        setWord(WORDS_DATA[Math.floor(Math.random() * WORDS_DATA.length)].split(''))
+    }, [])
 
     // funcion para verificar si la palabra fue adivinada
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { PetsContext } from '../../contexts/PetsContext'
-import gameMetadata from '../../data/gameMetadata.json'
+import GAME_METADATA from '../../data/gameMetadata.ts'
 
 
 const PlayScreen = () => {
@@ -21,8 +21,8 @@ const PlayScreen = () => {
             setComponent(() => importedComponent.default); // Asignar el componente
 
             // Cargar los metadatos del juego
-            if (gameMetadata[game]) {
-                setEnergyCost(gameMetadata[game].energy);
+            if (GAME_METADATA[game]) {
+                setEnergyCost(GAME_METADATA[game].energy);
             } else {
                 console.warn(`No hay metadatos para el juego: ${game}`);
             }
@@ -56,6 +56,11 @@ useEffect(() => {
   // verificar que la mascota este viva
   if (!Pets.find((pet) => pet.id === parseInt(petId)).live) {
     return <h1>Pet is dead</h1>
+  }
+
+  // verificar que la macota este despierta
+  if (Pets.find((pet) => pet.id === parseInt(petId)).sleeping) {
+    return <h1>Pet is sleeping</h1>
   }
 
   return (

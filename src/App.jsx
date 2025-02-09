@@ -13,6 +13,7 @@ const Play = lazy(() => import('./pages/play/PlayScreen'))
 const Manual = lazy(() => import('./pages/manual/ManualScreen'))
 const Shop = lazy(() => import('./pages/shop/ShopScreen'))
 const Product = lazy(() => import('./pages/product/ProductScreen'))
+const Inventory = lazy(() => import('./pages/inventory/InventoryScreen'))
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/play/:petId/:game" element={<Play />} />
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/:productId" element={<Product />} />
+                <Route path="/inventory" element={<Inventory />} />
               </Routes>
             </Suspense>
           </PetsProvider>

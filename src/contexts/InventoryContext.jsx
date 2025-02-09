@@ -11,17 +11,17 @@ export const InventoryProvider = ({ children }) => {
 
     // agregar item al inventario 
     const addInventory = (item, cant) => {
-        // ver si un item con ese id ya existe
-        const itemIndex = Inventory.findIndex((i) => i.id === item.id);
-        // si ya lo hay agregar l cantidad
-        if (itemIndex !== -1) {
-            const newInventory = [...Inventory];
-            newInventory[itemIndex].cant += cant;
-            setInventory(newInventory);
-        } else {
-            // si no existe agregar el item
-            setInventory([...Inventory, { ...item, cant }]);
-        }
+        setInventory((prevInventory) => {
+            const newInventory = prevInventory.map((i) =>
+                i.id === item.id ? { ...i, cant: i.cant + cant } : i
+            );
+    
+            if (!newInventory.some((i) => i.id === item.id)) {
+                newInventory.push({ ...item, cant });
+            }
+    
+            return newInventory;
+        });
     }
 
     // eliminar items del inventario

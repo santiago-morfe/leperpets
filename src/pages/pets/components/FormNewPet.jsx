@@ -1,7 +1,7 @@
-// formulario para crear un nuevo pet
-
 import React, { useState, useContext } from 'react'
 import { PetsContext } from '../../../contexts/PetsContext'
+import PETS_DATA from '../../../data/petsData.ts'
+
 
 const FormNewPet = ({setIsVisible}) => {
     const { addPets } = useContext(PetsContext)
@@ -10,6 +10,11 @@ const FormNewPet = ({setIsVisible}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        // verificar que esten todos los datos
+        if (!name || !type) {
+            alert('Faltan datos')
+            return
+        }
         addPets(name, type)
         setIsVisible(false)
     }
@@ -23,12 +28,14 @@ const FormNewPet = ({setIsVisible}) => {
         <div>
             <h1>Nueva Mascota</h1>
             <form onSubmit={handleSubmit}>
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
                 <select value={type} onChange={(e) => setType(e.target.value)}>
-                    <option value="dog">Perro</option>
-                    <option value="cat">Gato</option>
-                    <option value="fish">Pez</option>
+                    <option value="">Selecciona una mascota</option>
+                    {PETS_DATA.map((pet) => (
+                        <option key={pet.id} value={pet.type}>{pet.type}</option>
+                    ))}
                 </select>
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                
                 <button type="submit">Agregar</button>
                 <button onClick={handleCancel}>Cancelar</button>
             </form>

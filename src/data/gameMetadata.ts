@@ -1,4 +1,14 @@
-{
+interface GameMetadata {    
+    [key: string]: {
+        title: string
+        description: string
+        difficulty: string
+        energy: number
+        tags: Array<string>
+    }
+}
+
+const GAME_METADATA: GameMetadata = {
     "GameTest": {
         "title": "Game Test",
         "description": "A simple test game",
@@ -14,3 +24,5 @@
         "tags": ["word", "guessing", "game"]
     }
 }
+
+export default GAME_METADATA;
