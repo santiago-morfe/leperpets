@@ -43,8 +43,8 @@ useEffect(() => {
 
 useEffect(() => {
     if (finished) {
-        alert('Juego terminado');
         play(petId, energyCost);
+        window.location.href = `/pet/${petId}`;
     }
 }, [finished]);
 

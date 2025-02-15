@@ -25,4 +25,4 @@ const GAME_METADATA: GameMetadata = {
     }
 }
 
-export default GAME_METADATA;
+export default GAME_METADATA

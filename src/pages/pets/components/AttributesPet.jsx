@@ -15,7 +15,6 @@ const AttributesPet = ({ pet }) => {
 
     return (
         <div>
-            <p>Edad: {age}</p>
             <p>Felicidad: </p>
             <progress value={happiness} max={CONFIG.maxHappiness}></progress>
             <p>Energía: </p>

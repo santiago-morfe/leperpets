@@ -7,20 +7,13 @@ const ItemPet = ({ pet }) => {
     const [showOptions, setShowOptions] = useState(false);
     const { removePet, play, feed, rest, age,  sleep, wakeUp } = useContext(PetsContext);
 
-    const handleOptions = () => {
-        setShowOptions(!showOptions);
-    }
-
     if (!pet.live) {
         return (
             <div>
                 <Link to={`/pet/${pet.id}`}>
                 <h1>{pet.name}</h1>
                 </Link>
-                <span>edad: {age(pet.id)}</span>
                 <span>Estado: Muerto</span>
-                
-                <button onClick={() => removePet(pet.id)}>Eliminar</button>
             </div>
         )
     }
@@ -28,26 +21,13 @@ const ItemPet = ({ pet }) => {
     return (
         <>
             <Link to={`/pet/${pet.id}`}>
-                <h1>{pet.name}</h1>
+                <h2>{pet.name}</h2>
             </Link>
-            <button onClick={handleOptions}>...</button>
-            {showOptions && (
-                <div>
-                    <button onClick={() => play(pet.id, 5)}>Jugar</button>
-                    <button onClick={() => feed(pet.id)}>Alimentar</button>
-                    <button onClick={() => rest(pet.id)}>Descansar</button>
-                    <button onClick={() => removePet(pet.id)}>Eliminar</button>
-                    {pet.sleeping ? <button onClick={() => wakeUp(pet.id)}>Despertar</button> : <button onClick={() => sleep(pet.id)}>Dormir</button>}
-
-
-                </div>
-            )}
             <span>edad: {age(pet.id)}</span>
-            {pet.live ? <span>Vivo</span> : <span>Muerto</span>}
-            {pet.sleeping ? <span>Descansando</span> : <span>Despierto</span>}  
+            {pet.sleeping ? <span>estado: Descansando</span> : <span> estado: Despierto</span>}  
             <AttributesPet pet={pet} />
         </>
-    );
+    )
 }
 
 export default ItemPet;
