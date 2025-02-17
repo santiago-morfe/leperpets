@@ -30,6 +30,11 @@ const PlayScreen = () => {
     return null
   }
 
+  // opcion para rendirce y salier del juego
+  const handleSurrender = () => {
+    window.location.href = `/pet/${petId}`
+  }
+
   useEffect(() => {
     const loadComponent = async () => {
       try {
@@ -61,9 +66,10 @@ const PlayScreen = () => {
   useEffect(() => {
     if (finished) {
       play(petId, (CONFIG.energyToHappinessRate * energyCost) )
-      addMoney(reward)
-      alert((CONFIG.energyToHappinessRate * energyCost))
-      alert(reward)
+      // redondear la recompensa a 2 decimales
+      let newReward = Math.round(reward * 100) / 100
+      addMoney(petId, newReward)
+      alert(newReward)
       window.location.href = `/pet/${petId}`
     }
   }, [finished])
@@ -75,7 +81,7 @@ const PlayScreen = () => {
 
   return (
     <div>
-      {Component && <Component setFinished={setFinished} setStart={setStart} setReward={setReward} />}
+      {Component && <Component setFinished={setFinished} setStart={setStart} setReward={setReward} handleSurrender={handleSurrender} />}
     </div>
   )
 }

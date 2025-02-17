@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import WORDS_DATA from './wordsData'
 
-const WordGuess = ({ setFinished, setStart, setReward }) => {
+const WordGuess = ({ setFinished, setStart, setReward, handleSurrender }) => {
     const Reward = 400
     const [playStart, setplayStart] = useState(false)
     const [win, setWin] = useState(false)
@@ -24,6 +24,14 @@ const WordGuess = ({ setFinished, setStart, setReward }) => {
 
     const handleChange = (e, index) => {
         const newLastImputsWord = [...lastImputsWord]
+        // verificar que sea una letra (solo se pueden ingresar letras) o estar vacio
+        if (!e.target.value.match(/[a-zA-Z]/) && e.target.value) {
+            return
+        }
+        // si es minuscula camviar a mayuscula
+        if (e.target.value.match(/[a-z]/)) {
+            e.target.value = e.target.value.toUpperCase()
+        }
         newLastImputsWord[index].value = e.target.value.slice(0, 1) // Solo permite una letra
         setLastImputsWord(newLastImputsWord)
 
@@ -50,7 +58,9 @@ const WordGuess = ({ setFinished, setStart, setReward }) => {
     }
 
     useEffect(() => {
-        setWord(WORDS_DATA[Math.floor(Math.random() * WORDS_DATA.length)].split(''))
+        const newWord = WORDS_DATA[Math.floor(Math.random() * WORDS_DATA.length)].split('')
+        // comvertir a mayuscula
+        setWord(newWord.map(letter => letter.toUpperCase()))
     }, [])
 
     useEffect(() => {
@@ -69,6 +79,10 @@ const WordGuess = ({ setFinished, setStart, setReward }) => {
     }
 
     const handleEnter = () => {
+        if (lastImputsWord.some(input => !input.value)) {
+            setMessage('Complete the word')
+            return
+        }
         setAttem(attemp + 1)
         const newInputsWord = lastImputsWord.map((input, index) => {
             if (word.includes(input.value) && word[index] === input.value) {
@@ -144,6 +158,7 @@ const WordGuess = ({ setFinished, setStart, setReward }) => {
                                         id={`input-${index}`}
                                         type="text"
                                         value={input.value}
+                                        pattern="[a-zA-Z]"
                                         onChange={(e) => handleChange(e, index)}
                                         onKeyDownCapture={handleKeyPress}
                                         maxLength="1"
@@ -152,6 +167,8 @@ const WordGuess = ({ setFinished, setStart, setReward }) => {
                             </div>
                             <p>{message}</p>
                             <button onClick={handleEnter}>Enter</button>
+                            <button onClick={handleSurrender}>Surrender</button>
+
                         </>
                     }
                 </div>
