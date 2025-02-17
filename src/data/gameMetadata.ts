@@ -3,7 +3,7 @@ interface GameMetadata {
         title: string
         description: string
         difficulty: string
-        energy: number
+        energyCost: number
         tags: Array<string>
     }
 }
@@ -13,14 +13,14 @@ const GAME_METADATA: GameMetadata = {
         "title": "Game Test",
         "description": "A simple test game",
         "difficulty": "Easy",
-        "energy": 5,
+        "energyCost": 20,
         "tags": ["test", "game"]
     },
     "WordGuess": {
         "title": "Word Guess",
         "description": "A simple word guessing game",
         "difficulty": "Easy",
-        "energy": 5,
+        "energyCost": 20,
         "tags": ["word", "guessing", "game"]
     }
 }

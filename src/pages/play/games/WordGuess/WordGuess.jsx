@@ -1,7 +1,8 @@
-import { useState, useEffect,  useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import WORDS_DATA from './wordsData'
 
-const WordGuess = ({ setFinished, setStart}) => {
+const WordGuess = ({ setFinished, setStart, setReward }) => {
+    const Reward = 400
     const [playStart, setplayStart] = useState(false)
     const [win, setWin] = useState(false)
     const [message, setMessage] = useState('')
@@ -23,16 +24,42 @@ const WordGuess = ({ setFinished, setStart}) => {
 
     const handleChange = (e, index) => {
         const newLastImputsWord = [...lastImputsWord]
-        newLastImputsWord[index].value = e.target.value
+        newLastImputsWord[index].value = e.target.value.slice(0, 1) // Solo permite una letra
         setLastImputsWord(newLastImputsWord)
+
+        // Mueve el foco al siguiente input automáticamente
+        if (e.target.value && index < lastImputsWord.length - 1) {
+            document.getElementById(`input-${index + 1}`).focus()
+        }
+    }
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleEnter()
+        }
+        // si presiona las tecas de flecha izquierda o derecha
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault()
+            const index = Number(e.target.id.split('-')[1])
+            if (e.key === 'ArrowLeft' && index > 0) {
+                document.getElementById(`input-${index - 1}`).focus()
+            } else if (e.key === 'ArrowRight' && index < lastImputsWord.length - 1) {
+                document.getElementById(`input-${index + 1}`).focus()
+            }
+        } 
     }
 
     useEffect(() => {
         setWord(WORDS_DATA[Math.floor(Math.random() * WORDS_DATA.length)].split(''))
     }, [])
 
-    // funcion para verificar si la palabra fue adivinada
+    useEffect(() => {
+        if (playStart && !win) {
+            document.getElementById('input-0').focus()
+        }
+    }, [playStart, win, attemp])
 
+    // funcion para verificar si la palabra fue adivinada
     const checkWin = () => {
         if (lastImputsWord.every((input, index) => input.value === word[index])) {
             return true
@@ -41,7 +68,6 @@ const WordGuess = ({ setFinished, setStart}) => {
         }
     }
 
-
     const handleEnter = () => {
         setAttem(attemp + 1)
         const newInputsWord = lastImputsWord.map((input, index) => {
@@ -49,7 +75,6 @@ const WordGuess = ({ setFinished, setStart}) => {
                 return {
                     ...input,
                     inPosition: true
-
                 }
             } else if (word.includes(input.value)) {
                 return {
@@ -66,9 +91,9 @@ const WordGuess = ({ setFinished, setStart}) => {
         setInputsWord([...inputsWord, newInputsWord])
         if (checkWin()) {
             setWin(true)
+            setReward(Reward/attemp)
         } else {
             setMessage('Try again')
-
         }
         setLastImputsWord([
             { value: '', inWord: false, inPosition: false },
@@ -79,11 +104,16 @@ const WordGuess = ({ setFinished, setStart}) => {
         ])
     }
 
-
-
     return (
         <>
-            {(playStart && !win) &&
+            {(!playStart && !win) &&
+                <div>
+                    <h1>Word Guess</h1>
+                    <p>Press start to play</p>
+                    <button onClick={handlePlay}>Start</button>
+                </div>
+            }
+            {(playStart) &&
                 <div>
                     <h1>Word Guess</h1>
                     <p>Guess the word</p>
@@ -106,30 +136,30 @@ const WordGuess = ({ setFinished, setStart}) => {
                         ))
                     }
                     {!win &&
-                        <div>
-                            <input type="text" value={lastImputsWord[0].value} onChange={(e) => handleChange(e, 0)} />
-                            <input type="text" value={lastImputsWord[1].value} onChange={(e) => handleChange(e, 1)} />
-                            <input type="text" value={lastImputsWord[2].value} onChange={(e) => handleChange(e, 2)} />
-                            <input type="text" value={lastImputsWord[3].value} onChange={(e) => handleChange(e, 3)} />
-                            <input type="text" value={lastImputsWord[4].value} onChange={(e) => handleChange(e, 4)} />
-                        </div>
+                        <>
+                            <div>
+                                {lastImputsWord.map((input, index) => (
+                                    <input
+                                        key={index}
+                                        id={`input-${index}`}
+                                        type="text"
+                                        value={input.value}
+                                        onChange={(e) => handleChange(e, index)}
+                                        onKeyDownCapture={handleKeyPress}
+                                        maxLength="1"
+                                    />
+                                ))}
+                            </div>
+                            <p>{message}</p>
+                            <button onClick={handleEnter}>Enter</button>
+                        </>
                     }
-
-                    <p>{message}</p>
-                    <button onClick={handleEnter}>Enter</button>
-                </div>
-            }
-            {(!playStart && !win) &&
-                <div>
-                    <h1>Word Guess</h1>
-                    <p>Press start to play</p>
-                    <button onClick={handlePlay}>Start</button>
                 </div>
             }
             {win &&
                 <div>
-                    <h1>Word Guess</h1>
                     <p>Win</p>
+                    <p>palabra: {word}</p>
                     <button onClick={() => setFinished(true)}>Finish</button>
                 </div>
             }
