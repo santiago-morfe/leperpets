@@ -24,7 +24,7 @@ const PETS_DATA: Array<Pet> = [
     "type": "gato",
     "family": "animales",
     "compatibility": {
-      "filete de carne": 1,
+      "filete de carne": 3,
       "pez dorado": 2,
       "croquetas": 1
     }
@@ -34,9 +34,9 @@ const PETS_DATA: Array<Pet> = [
     "type": "pterodáctilo",
     "family": "dinosaurios",
     "compatibility": {
-      "filete de carne": 1,
-      "pez dorado": 2,
-      "baca": 2
+      "filete de carne": 2,
+      "pez dorado": 1,
+      "baca": 3
     }
   }
 ]
