@@ -15,8 +15,10 @@ const AttributesPet = ({ pet }) => {
 
     return (
         <div>
-            <p>Felicidad: </p>
-            <progress value={happiness} max={CONFIG.maxHappiness}></progress>
+            <p>
+                Felicidad: 
+                <progress value={happiness} max={CONFIG.maxHappiness}></progress>
+            </p>
             <p>Energía: </p>
             <progress value={energy} max={CONFIG.maxEnergy}></progress>
             <p>Hambre: </p>

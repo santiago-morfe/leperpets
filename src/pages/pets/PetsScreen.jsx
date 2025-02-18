@@ -10,17 +10,17 @@ const PetsScreen = () => {
 
     const handleAddPet = () => {
         setIsVisible(true)
-    };
+    }
 
     if (!Pets) {
         return <div>No se encontraron mascotas</div>
     }
 
     return (
-        <div>
+        <>
             <NavComponent />
             <h1>Mis mascotas</h1>
-            <button onClick={handleAddPet}>Agregar mascota</button>
+            <button onClick={handleAddPet}>adoptar</button>
             {isVisible && <FormNewPet setIsVisible={setIsVisible} />}
             <ul>
                 {Pets.map((pet) => (
@@ -29,8 +29,8 @@ const PetsScreen = () => {
                     </li>
                 ))}
             </ul>
-        </div>
-    );
+        </>
+    )
 }
 
 export default PetsScreen
