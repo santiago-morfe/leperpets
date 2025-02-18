@@ -1,6 +1,7 @@
 interface Pet {
   id: number
   type: string
+  image: string
   family: string
   compatibility: Compatibility
 }
@@ -13,6 +14,7 @@ const PETS_DATA: Array<Pet> = [
   {
     "id": 1,
     "type": "perro",
+    "image": "",
     "family": "animales",
     "compatibility": {
       "filete de carne": 1,
@@ -22,6 +24,7 @@ const PETS_DATA: Array<Pet> = [
   {
     "id": 2,
     "type": "gato",
+    "image": "",
     "family": "animales",
     "compatibility": {
       "filete de carne": 3,
@@ -32,6 +35,7 @@ const PETS_DATA: Array<Pet> = [
   {
     "id": 3,
     "type": "pterodáctilo",
+    "image": "",
     "family": "dinosaurios",
     "compatibility": {
       "filete de carne": 2,

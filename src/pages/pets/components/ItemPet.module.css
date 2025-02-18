@@ -1,0 +1,152 @@
+/* TamagotchiCard.module.css */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+.container {
+    background: #2a234a;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    text-decoration: none;
+    display: inline-block;
+    width: 250px;
+    background: #ffd599;
+    border: 4px solid #4a3c31;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'VT323', monospace;
+    color: #4a3c31;
+    image-rendering: pixelated;
+    box-shadow:
+        inset -4px -4px 0px 0px #e6b36d,
+        inset 4px 4px 0px 0px #ffe3c2,
+        4px 4px 3px 3px #00000051;
+    transition: transform 0.4s ease;
+    margin: 8px;
+}
+
+.card:hover {
+    transform: scale(1.04);
+    transition: transform 0.4s ease;
+}
+
+.card:active {
+    transform: scale(1.1);
+    transition: transform 0.1s ease;
+}
+
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    background: #ffe3c2;
+    padding: 8px;
+    border: 2px solid #4a3c31;
+    border-radius: 4px;
+}
+
+.image {
+    width: 128px;
+    height: 128px;
+    image-rendering: pixelated;
+    padding: 4px;
+}
+
+.info {
+    text-align: center;
+    width: 100%;
+}
+
+.name {
+    font-size: 20px;
+    margin: 0;
+    color: #4a3c31;
+    text-shadow: 2px 2px #ffe3c2;
+}
+
+.status {
+    font-size: 14px;
+    margin: 2px 0;
+}
+
+.statsContainer {
+    display: grid;
+    gap: 8px;
+}
+
+.statRow {
+    display: grid;
+    gap: 4px;
+}
+
+.statLabel {
+    color: #4a3c31;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.progressBar {
+    width: 100%;
+    height: 16px;
+    background: #e6b36d;
+    border: 2px solid #4a3c31;
+    position: relative;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+.progressFill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(45deg,
+            rgba(255, 255, 255, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
+            transparent 75%);
+    background-size: 8px 8px;
+}
+
+/* Estados */
+.statusDespierto {
+    color: #4cd964;
+}
+
+.statusDescansando {
+    color: #5856d6;
+}
+
+.statusMuerto {
+    color: #ff3b30;
+}
+
+/* Colores de las barras de progreso */
+.happinessBar .progressFill {
+    background: #4cd964;
+}
+
+.energyBar .progressFill {
+    background: #5ac8fa;
+}
+
+.satietyBar .progressFill {
+    background: #ffcc00;
+}
