@@ -8,8 +8,7 @@ export const WalletProvider = ({ children }) => {
     const [wallet, setWallet] = useState(JSON.parse(localStorage.getItem('wallet')) || CONFIG.initialMoney)
 
     useEffect(() => {
-        // redondear el saldo a dos decimales antes de guardar
-        const newWallet = Math.round(wallet * 100) / 100
+        const newWallet = Math.round(wallet)
         localStorage.setItem('wallet', JSON.stringify(newWallet))
     }, [wallet])
 
