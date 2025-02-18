@@ -210,7 +210,7 @@ export const PetsProvider = ({ children }) => {
     // funcion para dormir a la mascota
     const sleep = (id) => {
         const newPets = Pets.map((pet) => {
-            if (pet.id == parseInt(id) && pet.live && pet.energy > 0) {
+            if (pet.id == parseInt(id) && pet.live && pet.hunger > 0 && pet.energy < 100) {
                 return {
                     ...pet,
                     sleeping: true
