@@ -45,11 +45,17 @@ export const PetsProvider = ({ children }) => {
 
                         }
 
-                    } else if (pet.hunger > 0 || pet.happiness > 0) {
+                    } else if (pet.happiness > 0) {
 
                         return {
                             ...pet,
                             happiness: Math.max(pet.happiness - CONFIG.decreaseHappiness, 0) || 0,
+                        }
+
+                    } else if (pet.hunger > 0) {
+
+                        return {
+                            ...pet,
                             hunger: Math.max(pet.hunger - CONFIG.decreaseHunger, 0) || 0,
                         }
 
@@ -134,37 +140,6 @@ export const PetsProvider = ({ children }) => {
         setPets(newPets)
     }
 
-    // alimentar a mascota
-    const feed = (id) => {
-        const newPets = Pets.map((pet) => {
-            if ((pet.id === parseInt(id)) && (pet.hunger < CONFIG.maxHunger)) {
-                return {
-                    ...pet,
-                    hunger: Math.min(pet.hunger + 10, CONFIG.maxHunger) || 0,
-                    energy: Math.min(pet.energy + 5, CONFIG.maxEnergy) || 0,
-                }
-            }
-            return pet
-        })
-        setPets(newPets)
-    }
-
-    // descansar mascota
-    const rest = (id) => {
-        const newPets = Pets.map((pet) => {
-            if ((pet.id === parseInt(id)) && (pet.energy < CONFIG.maxEnergy) && (pet.hunger > 0)) {
-                return {
-                    ...pet,
-                    energy: Math.min(pet.energy + 10, CONFIG.maxEnergy) || 0,
-                    hunger: Math.max(pet.hunger - 10, 0) || 0,
-                    happiness: Math.min(pet.happiness + 5, CONFIG.maxHappiness) || 0,
-                }
-            }
-            return pet
-        })
-        setPets(newPets)
-    }
-
     // renombra una mascota
     const rename = (id, name) => {
         const newPets = Pets.map((pet) => {
@@ -221,7 +196,7 @@ export const PetsProvider = ({ children }) => {
                 .find(k => k.toLowerCase() === item.name.toLowerCase())
 
             const multiplier = compatibleKey ? petData.compatibility[compatibleKey] : 0
-            const hungerValue = item.baseValue * multiplier
+            const hungerValue = item.baseValue * (multiplier * 0.5 ) || 0
 
             return {
                 ...pet,
@@ -235,7 +210,7 @@ export const PetsProvider = ({ children }) => {
     // funcion para dormir a la mascota
     const sleep = (id) => {
         const newPets = Pets.map((pet) => {
-            if (pet.id == parseInt(id) && pet.live) {
+            if (pet.id == parseInt(id) && pet.live && pet.hunger > 0 && pet.energy < 100) {
                 return {
                     ...pet,
                     sleeping: true
@@ -266,8 +241,6 @@ export const PetsProvider = ({ children }) => {
             addPets,
             removePet,
             play,
-            feed,
-            rest,
             rename,
             age,
             consume,
