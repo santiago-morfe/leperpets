@@ -4,7 +4,13 @@
     top: 0;
     right: 0;
     padding: 24px;
-    z-index: 1000;
+    z-index: 1000;;
+}
+
+.nav:hover{
+    border-radius: 10px;
+    transform: scale(1.5) translate(-27px, 27px);
+    transition: all 0.5s;
 }
 
 .icon{
@@ -14,10 +20,13 @@
     border-radius: 50%;
 }
 
-.icon:hover{
-    animation: rotate 1s;
-
+.nav:hover > .icon{
+    animation: rotate 0.5s;
 }
+
+
+
+
 
 @keyframes rotate{
     0%{
@@ -30,23 +39,45 @@
 
 .ul{
     list-style: none;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     margin: 0;
     padding: 0;
+    animation: scale 0.3s;
+}
+
+
+@keyframes scale{
+    0%{
+        transform: scale(0) translate(200px, -200px);
+        opacity: 0;
+
+    }
+    30%{
+        opacity: 0;
+    }
+    60%{
+        opacity: 1;
+    }
+    100%{
+        transform: scale(1) translate(0, 0);
+    }
 }
 
 .ul > li{
-    margin: 10px;
-    padding: 10px;
+    margin: 8px;
+    padding: 8px;
+    text-align: right;
 }
 
-.ul > li:hover {
+.ul > li > a {
+    padding: 8px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+.ul > li > a:hover {
+    text-decoration: none;
     background-color: #FFD700;
     border-radius: 10px;
-}
-
-a{
     margin: 0;
-    text-decoration: none;
     color: rgb(255, 255, 255);
 }
