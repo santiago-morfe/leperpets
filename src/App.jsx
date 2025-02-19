@@ -5,6 +5,7 @@ import { PetsProvider } from './contexts/PetsContext'
 import { InventoryProvider } from './contexts/InventoryContext'
 import { WalletProvider } from './contexts/WalletContext'
 import { CartProvider } from './contexts/CartContext'
+import LoadingComponent from './components/LoadingComponent'
 
 
 const Home = lazy(() => import('./pages/home/HomeScreen'))
@@ -15,6 +16,7 @@ const Manual = lazy(() => import('./pages/manual/ManualScreen'))
 const Shop = lazy(() => import('./pages/shop/ShopScreen'))
 const Product = lazy(() => import('./pages/product/ProductScreen'))
 const Inventory = lazy(() => import('./pages/inventory/InventoryScreen'))
+const NotFound = lazy(() => import('./components/NotFoundComponent'))
 
 function App() {
   return (
@@ -22,9 +24,9 @@ function App() {
       <WalletProvider >
         <InventoryProvider>
           <PetsProvider>
-            <Suspense fallback={<div>Cargando...</div>}>
+            <Suspense fallback={<LoadingComponent />}>
               <Routes>
-                <Route path="*" element={<div>No encontrado</div>} />
+                <Route path="*" element={<NotFound />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/manual" element={<Manual />} />

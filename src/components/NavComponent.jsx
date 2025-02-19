@@ -7,7 +7,7 @@ const NavComponent = () => {
 
     return (
         <div
-            className={IsOpen && styles.overlay}
+            className={IsOpen ? styles.overlay : ''}
         >
             <nav
                 className={styles.nav}

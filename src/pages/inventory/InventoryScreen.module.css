@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+.container {
+    min-height: 100vh;
+    background: #2a234a;
+    font-family: 'VT323', monospace;
+    display: flex;
+}
+
+.sidePanel {
+    width: 300px;
+    background: rgba(255, 213, 153, 0.05);
+    border-right: 4px solid #4a3c31;
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.mainContent {
+    flex: 1;
+}
+
+.title {
+    font-size: 48px;
+    color: #ffd599;
+    text-align: center;
+    margin: 20px 0;
+    text-shadow:
+        4px 4px 0 #4a3c31,
+        -2px -2px 0 #4a3c31,
+        2px -2px 0 #4a3c31,
+        -2px 2px 0 #4a3c31,
+        2px 2px 0 #4a3c31;
+}
+
+.walletDisplay {
+    background: rgba(255, 213, 153, 0.1);
+    border: 3px solid #4a3c31;
+    border-radius: 8px;
+    padding: 16px;
+    max-width: 300px;
+    margin: 0 auto 32px;
+    text-align: center;
+    box-shadow:
+        inset -3px -3px 0 0 rgba(0, 0, 0, 0.2),
+        inset 3px 3px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+.walletAmount {
+    font-size: 32px;
+    color: #4cd964;
+    margin: 0;
+    text-shadow: 2px 2px #3eb953;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.inventoryContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+}
+
+.inventoryList {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.inventoryItem {
+    background: #ffd599;
+    border: 4px solid #4a3c31;
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow:
+        inset -4px -4px 0px 0px #e6b36d,
+        inset 4px 4px 0px 0px #ffe3c2,
+        0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.inventoryItem:hover {
+    transform: translateY(-4px);
+}
+
+.inventoryItem:active {
+    transform: translateY(2px);
+}
+
+.focusContainer {
+    background: #ffd599;
+    border: 4px solid #4a3c31;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow:
+        inset -4px -4px 0px 0px #e6b36d,
+        inset 4px 4px 0px 0px #ffe3c2,
+        0 8px 16px rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.closeButton {
+    background: #ff3b30;
+    border: 3px solid #4a3c31;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: white;
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        inset -2px -2px 0 0 #cc2f26,
+        inset 2px 2px 0 0 #ff524b;
+    text-shadow: 2px 2px #cc2f26;
+
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

@@ -8,9 +8,11 @@
 body {
     margin: 0;
     padding: 0;
+    image-rendering: pixelated;
 }
-.container {
+
+/* .container {
     min-height: 100vh;
     background: #2a234a;
     padding: 20px;
-}
+} */
