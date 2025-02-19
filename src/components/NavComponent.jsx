@@ -6,29 +6,37 @@ const NavComponent = () => {
     const [IsOpen, setIsOpen] = useState(false)
 
     return (
-        <nav
-            className={styles.nav}
-            onMouseEnter={() => setIsOpen(true)}
-            onMouseLeave={() => setIsOpen(false)}
+        <div
+            className={IsOpen && styles.overlay}
         >
-            {IsOpen && (
-                <ul className={styles.ul}>
-                    <li>
-                        <Link to="/">Inicio</Link>
-                    </li>
-                    <li>
-                        <Link to="/pets">Mis mascotas</Link>
-                    </li>
-                    <li>
-                        <Link to="/inventory">Inventario</Link>
-                    </li>
-                    <li>
-                        <Link to="/shop">Tienda</Link>
-                    </li>
-                </ul>
-            )}
-            <img src="compass.png" className={styles.icon} alt="icon" />
-        </nav>
+            <nav
+                className={styles.nav}
+                onMouseEnter={() => setIsOpen(true)}
+                onMouseLeave={() => setIsOpen(false)}
+
+            >
+                {IsOpen && (
+                    <ul className={styles.ul}>
+                        <li>
+                            <Link to="/">Inicio</Link>
+                        </li>
+                        <li>
+                            <Link to="/pets">Mis mascotas</Link>
+                        </li>
+                        <li>
+                            <Link to="/inventory">Inventario</Link>
+                        </li>
+                        <li>
+                            <Link to="/shop">Tienda</Link>
+                        </li>
+                        <li>
+                            <Link to="/manual">ayuda</Link>
+                        </li>
+                    </ul>
+                )}
+                <img src="compass.png" className={styles.icon} alt="icon" />
+            </nav>
+        </div>
     )
 
 }

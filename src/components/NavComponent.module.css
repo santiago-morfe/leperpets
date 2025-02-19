@@ -11,7 +11,32 @@
     border-radius: 10px;
     transform: scale(1.5) translate(-27px, 27px);
     transition: all 0.5s;
+
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(42, 35, 74, 0.8);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: flex;
+    animation: fade 0.3s;
+}
+
+/* animacion de difuminado */
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 
 .icon{
     width: 50px;
