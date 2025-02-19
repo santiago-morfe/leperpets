@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from 'react'
+import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import { PetsProvider } from './contexts/PetsContext'
 import { InventoryProvider } from './contexts/InventoryContext'

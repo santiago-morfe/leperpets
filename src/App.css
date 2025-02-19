@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+* {
+    font-family: 'VT323', monospace;
+}
+
+/* formatear estilos de la página para eliminar vordes y margenes */
+body {
+    margin: 0;
+    padding: 0;
+}
+.container {
+    min-height: 100vh;
+    background: #2a234a;
+    padding: 20px;
+}

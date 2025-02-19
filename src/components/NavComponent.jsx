@@ -1,29 +1,18 @@
-import {Link} from 'react-router-dom';
-import {useState, useRef, useEffect} from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './NavComponent.module.css';
 
 const NavComponent = () => {
-
-    const  [IsOpen, setIsOpen] = useState(false)
-    const navRef = useRef(null)
-
-    const handleClick = (e) => {
-        if (navRef.current && !navRef.current.contains(e.target)) {
-            setIsOpen(false)
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener('click', handleClick)
-        return () => {
-            document.removeEventListener('click', handleClick)
-        }
-    }, [])
+    const [IsOpen, setIsOpen] = useState(false)
 
     return (
-        <nav ref={navRef}>
-            <button onClick={() => setIsOpen(!IsOpen)}>Menu</button>
+        <nav
+            className={styles.nav}
+            onMouseEnter={() => setIsOpen(true)}
+            onMouseLeave={() => setIsOpen(false)}
+        >
             {IsOpen && (
-                <ul>
+                <ul className={styles.ul}>
                     <li>
                         <Link to="/">Inicio</Link>
                     </li>
@@ -38,6 +27,7 @@ const NavComponent = () => {
                     </li>
                 </ul>
             )}
+            <img src="compass.png" className={styles.icon} alt="icon" />
         </nav>
     )
 
