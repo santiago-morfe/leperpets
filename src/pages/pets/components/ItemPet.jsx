@@ -31,7 +31,7 @@ const ItemPet = ({ pet }) => {
         <Link to={`/pet/${pet.id}`} className={styles.card}>
             <div className={styles.header} >
                 <img
-                    src="silueta_pet.png"
+                    src="/silueta_pet.png"
                     alt="" className={styles.image} />
                 <div className={styles.info}>
                     <h2 className={styles.name}>{name}</h2>

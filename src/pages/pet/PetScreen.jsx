@@ -1,66 +1,86 @@
-import { useParams } from 'react-router-dom'
 import { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { PetsContext } from '../../contexts/PetsContext'
 import NavComponent from '../../components/NavComponent'
 import FootList from './components/FootList.jsx'
 import GamesList from './components/GamesList.jsx'
 import CONFIG from '../../data/config.ts'
-
+import styles from './PetScreen.module.css'
 
 const PetScreen = () => {
   const { petId } = useParams()
-
-  // Contexto de mascotas
   const { Pets, age, sleep, wakeUp } = useContext(PetsContext)
   const [selectedPet, setSelectedPet] = useState(null)
 
-  // Actualizar la mascota seleccionada si cambian los datos del contexto o el petId
   useEffect(() => {
     setSelectedPet(Pets.find((pet) => pet.id == petId))
   }, [Pets, petId])
 
   if (!selectedPet) return <div>No se encontró la mascota</div>
 
-  return (
-    <div>
-      <NavComponent />
-      <h1>{selectedPet.name}</h1>
-      <p>{selectedPet.type}</p>
-      <p>Edad: {age(petId)}</p>
-      {
-        selectedPet.live && (
-          <p>Estado: {selectedPet.sleeping ? 'Descansando' : 'Despierto'}</p>
-        )
-      }
-      {!selectedPet.live ? <p>Estado: Muerto</p> : null}
-      <p>
-        Felicidad:
-        <progress value={selectedPet.happiness} max={CONFIG.maxHappiness}></progress>
-      </p>
-      <p>
-        Energía:
-        <progress value={selectedPet.energy} max={CONFIG.maxEnergy}></progress>
-      </p>
-      <p>
-        Hambre:
-        <progress value={selectedPet.hunger} max={CONFIG.maxHunger}></progress>
-      </p>
-      {(selectedPet.live && !selectedPet.sleeping) && (
-        <>
-          <FootList />
-          <GamesList />
-        </>
-      )}
-      {(selectedPet.sleeping && selectedPet.live) && (// Mostrar botón de despertar si la mascota está dormida 
-        <button onClick={() => wakeUp(petId)}>Despertar</button>
-      )}
-      {(!selectedPet.sleeping && selectedPet.live) && (// Mostrar botón de dormir si la mascota está despierta
-        <button onClick={() => sleep(petId)}>Dormir</button>
-      )}
-      {!selectedPet.live ? (<FootList />) : null}
+  const { name, type, live, sleeping, happiness, energy, hunger } = selectedPet
 
+  return (
+    <div className={styles.container}>
+      <NavComponent />
+      <header className={styles.header}>
+        <div className={styles.petInfo}>
+          <h1 className={styles.title}>{name}</h1>
+          <img src='/silueta_pet.png' alt='' className={styles.image} />
+          <p className=  {styles.type}>{type}</p>
+        </div>
+
+        <div className={styles.petStats}>
+          <p>Edad: {age(petId)}</p>
+          <p>Estado: {live ? (sleeping ? 'Descansando' : 'Despierto') : 'Muerto'}</p>
+
+          <StatusBar label="Felicidad" value={happiness} max={CONFIG.maxHappiness} />
+          <StatusBar label="Energía" value={energy} max={CONFIG.maxEnergy} />
+          <StatusBar label="Hambre" value={hunger} max={CONFIG.maxHunger} />
+        </div>
+      </header>
+
+      <main className={styles.main}>
+        {live && (
+          <>
+            <section className={styles.actions}>
+              <div>
+                {sleeping ? (
+                  <button onClick={() => wakeUp(petId)}>Despertar</button>
+                ) : (
+                  <button onClick={() => sleep(petId)}>Dormir</button>
+                )}
+              </div>
+              {live && !sleeping && (
+                <>
+                  <FootList />
+                  <GamesList />
+                </>
+              )}
+            </section>
+            <section className={styles.info}>
+              <p>informacion</p>
+              <p>alimentos compatibles</p>
+              <p>historia</p>
+            </section>
+          </>
+        )}
+        {!live && <FootList />}
+      </main>
     </div>
   )
 }
+
+const StatusBar = ({ label, value, max }) => (
+  <div>
+    <div>
+      <span>{label}</span>
+      <span>{Math.round((value / max) * 100)}%</span>
+    </div>
+    <div>
+      <div style={{ width: `${(value / max) * 100}%` }}></div>
+    </div>
+  </div>
+)
 
 export default PetScreen

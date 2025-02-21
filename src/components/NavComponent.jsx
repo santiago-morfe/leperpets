@@ -34,7 +34,7 @@ const NavComponent = () => {
                         </li>
                     </ul>
                 )}
-                <img src="compass.png" className={styles.icon} alt="icon" />
+                <img src="/compass.png" className={styles.icon} alt="icon" />
             </nav>
         </div>
     )

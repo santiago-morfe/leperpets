@@ -1,0 +1,86 @@
+.container {
+    min-height: 100vh;
+    background: #2a234a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .petInfo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .title {
+            font-size: 64px;
+            letter-spacing: 6px;
+            margin: 0;
+            color: #ffd599;
+            font-family: 'VT323', monospace;
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+            text-shadow:
+                8px 8px 0 #4a3c31,
+                -4px -4px 0 #4a3c31,
+                4px -4px 0 #4a3c31,
+                -4px 4px 0 #4a3c31,
+                4px 4px 0 #4a3c31;
+        }
+
+        .image {
+            width: 128px;
+            height: 128px;
+            image-rendering: pixelated;
+            padding: 4px;
+        }
+
+        .type {
+            font-size: 24px;
+            color: #ffd599;
+            text-shadow: 2px 2px 0 #4a3c31;
+        }
+    }
+
+    .petStats {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .actions {
+        display: flex;
+        gap: 20px;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
