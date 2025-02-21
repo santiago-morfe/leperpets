@@ -27,16 +27,17 @@ const PetScreen = () => {
         <div className={styles.petInfo}>
           <h1 className={styles.title}>{name}</h1>
           <img src='/silueta_pet.png' alt='' className={styles.image} />
-          <p className=  {styles.type}>{type}</p>
+          <p className={styles.type}>{type}</p>
         </div>
 
         <div className={styles.petStats}>
-          <p>Edad: {age(petId)}</p>
-          <p>Estado: {live ? (sleeping ? 'Descansando' : 'Despierto') : 'Muerto'}</p>
-
-          <StatusBar label="Felicidad" value={happiness} max={CONFIG.maxHappiness} />
-          <StatusBar label="Energía" value={energy} max={CONFIG.maxEnergy} />
-          <StatusBar label="Hambre" value={hunger} max={CONFIG.maxHunger} />
+          <p className={styles.age} >Edad: {age(petId)}</p>
+          {(live && !sleeping) && <p className={styles.awake+ ' ' + styles.status}>Despierto</p>}
+          {(live && sleeping) && <p className={styles.sleeping+ ' ' + styles.status}>Durmiendo</p>}
+          {(!live) && <p className={styles.dead+ ' ' + styles.status}>Muerto</p>}
+          <StatusBar label="Felicidad" value={happiness} max={CONFIG.maxHappiness} className={styles.happinessBar} />
+          <StatusBar label="Energía" value={energy} max={CONFIG.maxEnergy} className={styles.energyBar} />
+          <StatusBar label="Hambre" value={hunger} max={CONFIG.maxHunger} className={styles.satietyBar} />
         </div>
       </header>
 
@@ -46,9 +47,9 @@ const PetScreen = () => {
             <section className={styles.actions}>
               <div>
                 {sleeping ? (
-                  <button onClick={() => wakeUp(petId)}>Despertar</button>
+                  <button className={styles.button} onClick={() => wakeUp(petId)}>Despertar</button>
                 ) : (
-                  <button onClick={() => sleep(petId)}>Dormir</button>
+                  <button className={styles.button} onClick={() => sleep(petId)}>Dormir</button>
                 )}
               </div>
               {live && !sleeping && (
@@ -71,14 +72,17 @@ const PetScreen = () => {
   )
 }
 
-const StatusBar = ({ label, value, max }) => (
-  <div>
-    <div>
+const StatusBar = ({ label, value, max, className }) => (
+  <div className={className}>
+    <div className={styles.progressLabel}>
       <span>{label}</span>
       <span>{Math.round((value / max) * 100)}%</span>
     </div>
-    <div>
-      <div style={{ width: `${(value / max) * 100}%` }}></div>
+    <div className={styles.progressBar}>
+      <div
+        className={styles.progressFill}
+        style={{ width: `${value}%` }}
+      />
     </div>
   </div>
 )
