@@ -1,0 +1,52 @@
+.button{
+    font: 24px 'VT323', monospace;
+    padding: 10px 20px;
+    background: #4cd964;
+    border: 3px solid #3eb953;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s;
+    animation: pulse 2s infinite;
+    box-shadow: inset -3px -3px 0 #3eb953, inset 3px 3px 0 #65ff7c, 0 4px 10px rgba(0, 0, 0, 0.4);
+    text-shadow: 2px 2px #3eb953;
+}
+
+
+.button:hover {
+    transform: scale(1.1);
+    animation: none;
+}
+
+.button:active {
+    transform: scale(0.95);
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffd599;
+    border: 6px solid #4a3c31;
+    border-radius: 12px;
+    padding: 24px;
+    min-width: 300px;
+    box-shadow:
+        inset -6px -6px 0 0 #e6b36d,
+        inset 6px 6px 0 0 #ffe3c2,
+        0 0 0 2000px rgba(0, 0, 0, 0.5);
+    animation: popup 0.3s ease-out;
+    .itemList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+
+

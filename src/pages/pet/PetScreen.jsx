@@ -32,9 +32,9 @@ const PetScreen = () => {
 
         <div className={styles.petStats}>
           <p className={styles.age} >Edad: {age(petId)}</p>
-          {(live && !sleeping) && <p className={styles.awake+ ' ' + styles.status}>Despierto</p>}
-          {(live && sleeping) && <p className={styles.sleeping+ ' ' + styles.status}>Durmiendo</p>}
-          {(!live) && <p className={styles.dead+ ' ' + styles.status}>Muerto</p>}
+          {(live && !sleeping) && <p className={styles.awake + ' ' + styles.status}>Despierto</p>}
+          {(live && sleeping) && <p className={styles.sleeping + ' ' + styles.status}>Durmiendo</p>}
+          {(!live) && <p className={styles.dead + ' ' + styles.status}>Muerto</p>}
           <StatusBar label="Felicidad" value={happiness} max={CONFIG.maxHappiness} className={styles.happinessBar} />
           <StatusBar label="Energía" value={energy} max={CONFIG.maxEnergy} className={styles.energyBar} />
           <StatusBar label="Hambre" value={hunger} max={CONFIG.maxHunger} className={styles.satietyBar} />
@@ -66,7 +66,11 @@ const PetScreen = () => {
             </section>
           </>
         )}
-        {!live && <FootList />}
+        {!live && (
+          <section className={styles.actions}>
+            <FootList />
+          </section>
+        )}
       </main>
     </div>
   )
