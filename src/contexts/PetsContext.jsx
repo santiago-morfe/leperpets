@@ -22,7 +22,7 @@ export const PetsProvider = ({ children }) => {
         const interval = setInterval(() => {
             setPets((currentPets) => {
                 return currentPets.map((pet) => {
-                    if (pet.live === false) {
+                    if (pet.live === false || window.location.pathname === `/play/${pet.id}/WordGuess`) {
 
                         return pet
 

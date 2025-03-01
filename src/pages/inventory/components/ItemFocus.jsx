@@ -2,15 +2,17 @@ import { useMemo, useContext, useRef, useState, useEffect } from 'react'
 import { InventoryContext } from '../../../contexts/InventoryContext'
 import { WalletContext } from '../../../contexts/WalletContext'
 import { PetsContext } from '../../../contexts/PetsContext'
+import styles from './ItemInventory.module.css'
 import PETS_DATA from '../../../data/petsData'
 
 const ItemInventory = ({ item, setFocus }) => {
     const { removeInventory } = useContext(InventoryContext)
     const { Pets, consume } = useContext(PetsContext)
     const { addMoney } = useContext(WalletContext)
-    const [ isPocion, setIsPocion ] = useState(item.name.toLowerCase() === 'pocion')
+    const [isPocion, setIsPocion] = useState(item.name.toLowerCase() === 'pocion')
     const [isVisible, setIsVisible] = useState(false)
-    const ref = useRef
+    const containerRef = useRef(null)
+    const ulRef = useRef(null)
 
     const petCompatible = useMemo(() => {
         if (!item || !PETS_DATA || !Pets) return []
@@ -27,7 +29,7 @@ const ItemInventory = ({ item, setFocus }) => {
             const isCompatible = Object.keys(pet.compatibility).some(key =>
                 key.toLowerCase() === lowerCaseItemName
             )
-            
+
             if (isCompatible) {
                 acc.push(pet.type)
             }
@@ -44,16 +46,24 @@ const ItemInventory = ({ item, setFocus }) => {
 
     useEffect(() => {
         const handleClick = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) {
-                setIsVisible(false)
+            // Verificar si el clic fue dentro del ul o sus hijos
+            if (ulRef.current && (ulRef.current === e.target || ulRef.current.contains(e.target))) {
+                return; // No hacer nada si el clic fue dentro del ul
             }
+            
+            // Si el clic no fue en el ul, cerrar el menú
+            setIsVisible(false);
         }
 
-        document.addEventListener('click', handleClick)
+        if (isVisible) {
+            document.addEventListener('click', handleClick)
+        }
+        
         return () => document.removeEventListener('click', handleClick)
-    } ,[])
+    }, [isVisible])
 
-    const handleUse = () => {
+    const handleUse = (e) => {
+        e.stopPropagation(); // Evitar que el clic en el botón cierre inmediatamente el menú
         setIsVisible(!isVisible)
     }
 
@@ -76,46 +86,49 @@ const ItemInventory = ({ item, setFocus }) => {
 
     const handleSell = () => {
         if (item.cant > 1) {
-            addMoney(item.price*0.75)
+            addMoney(item.price * 0.75)
             removeInventory(item.id, 1)
-        }else {
-            addMoney(item.price*0.75)
+        } else {
+            addMoney(item.price * 0.75)
             removeInventory(item.id, 1)
             setFocus(null)
         }
     }
 
     return (
-        <div>
-            <p>{item.name} ({item.cant})</p>
-            <button onClick={handleUse} >usar ({petCompatible.length})</button>
-            {
-                (isVisible && !isPocion ) && (
-                    <ul>
-                        {
+        <div className={styles.container} ref={containerRef}>
+            <h2>{item.name} ({item.cant})</h2>
+            <p>{item.description}</p>
+            <button onClick={handleUse}>usar ({petCompatible.length})</button>
+            {(isVisible && !isPocion) && (
+                <div className={styles.overlay}>
+                    <ul className={styles.list} ref={ulRef}>
+                        {petCompatible.length > 0 ?
                             petCompatible.map(pet => (
                                 <li key={pet.id}>
                                     <button onClick={() => handleConsume(pet.id)}>dar</button> a {pet.name}
                                 </li>
                             ))
+                            : <li>No compatibles</li>
                         }
                     </ul>
-                )
-            }
-            { 
-                (isVisible && isPocion) && (
-                    <ul>
-                        {
+                </div>
+            )}
+            {(isVisible && isPocion) && (
+                <div className={styles.overlay}>
+                    <ul className={styles.list} ref={ulRef}>
+                        {Pets.filter(pet => !pet.live).length > 0 ?
                             Pets.filter(pet => !pet.live).map(pet => (
                                 <li key={pet.id}>
                                     <button onClick={() => handleConsume(pet.id)}>dar</button> a {pet.name}
                                 </li>
                             ))
+                            : <li>No compatibles</li>
                         }
                     </ul>
-                )
-            }
-            <button onClick={handleSell}>vender por {item.price*0.75}</button>
+                </div>
+            )}
+            <button onClick={handleSell}>vender por {item.price * 0.75}</button>
         </div>
     )
 }

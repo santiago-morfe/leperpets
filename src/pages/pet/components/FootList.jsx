@@ -7,7 +7,7 @@ import styles from './FootList.module.css'
 
 const FootList = () => {
     const [isVisible, setIsVisible] = useState(false)
-    const gameListRef = useRef(null)
+    const modalRef = useRef(null)
     const { Inventory, removeInventory } = useContext(InventoryContext)
     const { Pets, consume } = useContext(PetsContext)
     const { petId } = useParams()
@@ -25,34 +25,49 @@ const FootList = () => {
         if (item.cant < 1 || selectedPet.hunger >= 100) return
         consume(petId, item)
         removeInventory(item.id, 1)
-        setIsVisible(false)
-    }
-
-    const handleClick = (e) => {
-        if (gameListRef.current && !gameListRef.current.contains(e.target)) {
-            setIsVisible(false)
-        }
     }
 
     useEffect(() => {
-        document.addEventListener('click', handleClick)
-        return () => document.removeEventListener('click', handleClick)
-    }, [])
+        const handleClick = (e) => {
+
+            // Si el clic fue fuera del modal, cerrar
+            if (modalRef.current && !modalRef.current.contains(e.target)) {
+                setIsVisible(false)
+            }
+        }
+
+        // Solo agregar el listener cuando el modal esté visible
+        if (isVisible) {
+            // Usar setTimeout para agregar el listener en el siguiente ciclo
+            // Esto evita que se cierre inmediatamente al abrir
+            setTimeout(() => {
+                document.addEventListener('click', handleClick)
+            }, 0)
+        }
+
+        return () => {
+            document.removeEventListener('click', handleClick)
+        }
+    }, [isVisible])
+
+    const toggleModal = (e) => {
+        e.stopPropagation() // Evitar que el clic en el botón se propague
+        setIsVisible(!isVisible)
+    }
 
     if (!selectedPet.live) {
         const potion = items.find(item => item.name.toLowerCase() === 'pocion')
         return potion ? (
-            <div  ref={gameListRef}>
+            <div>
                 <button
-                    ref={gameListRef}
                     className={styles.reviveButton}
-                    onClick={() => setIsVisible(!isVisible)}
+                    onClick={toggleModal}
                     disabled={potion.cant < 1}
                 >
                     Revivir
                 </button>
                 {isVisible && (
-                    <div className={styles.modal}>
+                    <div className={styles.modal} ref={modalRef}>
                         <button
                             className={styles.itemButton}
                             onClick={() => handleConsume(potion)}
@@ -62,32 +77,36 @@ const FootList = () => {
                     </div>
                 )}
             </div>
-        ) : null
+        ) : <p>No hay pociones</p>
     }
 
     return (
-        <div ref={gameListRef}>
+        <div>
             <button
                 className={styles.feedButton}
-                onClick={() => setIsVisible(!isVisible)}
+                onClick={toggleModal}
             >
                 Alimentar
             </button>
 
             {isVisible && (
-                <div className={styles.modal}>
+                <div className={styles.modal} ref={modalRef}>
                     <ul className={styles.itemList}>
-                        {items.map((item) => (
-                            <li key={item.id}>
-                                <button
-                                    className={styles.itemButton}
-                                    onClick={() => handleConsume(item)}
-                                    disabled={item.cant < 1 || selectedPet.hunger >= 100}
-                                >
-                                    {item.name} ({item.cant})
-                                </button>
-                            </li>
-                        ))}
+                        {items.length > 0 ?
+                            items.map((item) => (
+                                <li key={item.id}>
+                                    <button
+                                        
+                                        className={styles.itemButton}
+                                        onClick={() => handleConsume(item)}
+                                        disabled={item.cant < 1 || selectedPet.hunger >= 100}
+                                    >
+                                        {item.name} ({item.cant})
+                                    </button>
+                                </li>
+                            ))
+                            : <li>No hay items compatibles</li>
+                        }
                     </ul>
                 </div>
             )}

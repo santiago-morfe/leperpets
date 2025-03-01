@@ -1,5 +1,6 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import WORDS_DATA from './wordsData'
+import styles from './WordGuess.module.css'
 
 const WordGuess = ({ setFinished, setStart, setReward, handleSurrender }) => {
     const Reward = 400
@@ -54,7 +55,7 @@ const WordGuess = ({ setFinished, setStart, setReward, handleSurrender }) => {
             } else if (e.key === 'ArrowRight' && index < lastImputsWord.length - 1) {
                 document.getElementById(`input-${index + 1}`).focus()
             }
-        } 
+        }
     }
 
     useEffect(() => {
@@ -80,7 +81,7 @@ const WordGuess = ({ setFinished, setStart, setReward, handleSurrender }) => {
 
     const handleEnter = () => {
         if (lastImputsWord.some(input => !input.value)) {
-            setMessage('Complete the word')
+            setMessage('Complete la palabra')
             return
         }
         setAttem(attemp + 1)
@@ -105,9 +106,9 @@ const WordGuess = ({ setFinished, setStart, setReward, handleSurrender }) => {
         setInputsWord([...inputsWord, newInputsWord])
         if (checkWin()) {
             setWin(true)
-            setReward(Reward/attemp)
+            setReward(Reward / attemp)
         } else {
-            setMessage('Try again')
+            setMessage('sigue intentando')
         }
         setLastImputsWord([
             { value: '', inWord: false, inPosition: false },
@@ -121,17 +122,17 @@ const WordGuess = ({ setFinished, setStart, setReward, handleSurrender }) => {
     return (
         <>
             {(!playStart && !win) &&
-                <div>
+                <div className={styles.container}>
                     <h1>Word Guess</h1>
-                    <p>Press start to play</p>
+                    <p>Presiona Start para comenzar</p>
                     <button onClick={handlePlay}>Start</button>
                 </div>
             }
             {(playStart) &&
-                <div>
+                <div className={styles.container}>
                     <h1>Word Guess</h1>
-                    <p>Guess the word</p>
-                    <p>Attemp: {attemp}</p>
+                    <p> Advinar la palabra</p>
+                    <p>intentos: {attemp}</p>
                     {
                         inputsWord.map((item, index) => (
                             <div key={index}>
@@ -141,9 +142,7 @@ const WordGuess = ({ setFinished, setStart, setReward, handleSurrender }) => {
                                         type="text"
                                         value={input.value}
                                         disabled
-                                        style={{
-                                            backgroundColor: input.inPosition ? 'green' : input.inWord ? 'yellow' : 'red'
-                                        }}
+                                        className={input.inPosition ? styles.inPosition : input.inWord ? styles.inWord : styles.notInWord}
                                     />
                                 ))}
                             </div>
@@ -167,17 +166,17 @@ const WordGuess = ({ setFinished, setStart, setReward, handleSurrender }) => {
                             </div>
                             <p>{message}</p>
                             <button onClick={handleEnter}>Enter</button>
-                            <button onClick={handleSurrender}>Surrender</button>
+                            <button onClick={handleSurrender}>rendirse</button>
 
                         </>
                     }
-                </div>
-            }
-            {win &&
-                <div>
-                    <p>Win</p>
-                    <p>palabra: {word}</p>
-                    <button onClick={() => setFinished(true)}>Finish</button>
+                    {win &&
+                        <div>
+                            <p>ganaste</p>
+                            <p>palabra: {word}</p>
+                            <button onClick={() => setFinished(true)}>teminar</button>
+                        </div>
+                    }
                 </div>
             }
         </>
